@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "SquirrelLife",
+			"Path": "..\\Source\\SquirrelLife.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "SquirrelLifeEditor",
+			"Path": "..\\Source\\SquirrelLifeEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
