@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <None Include="..\..\.vsconfig" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -31,300 +32,69 @@
     <Filter Include="Source\SquirrelLife">
       <UniqueIdentifier>{C42E5C88-5914-32F6-8D25-E73952C77437}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\SquirrelLife\Private">
+      <UniqueIdentifier>{07707280-718D-3C3B-B09C-CFD7523E5E1C}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\SquirrelLife.cpp">
+      <Filter>Source\SquirrelLife\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\SquirrelLife\Private\Training">
+      <UniqueIdentifier>{BE9A0CB1-A314-3E2F-978A-310786951C1C}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodActor.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodDispenserActor.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodDispenserWidget.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingCameraActor.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingGameMode.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingPawn.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingPlayerController.cpp">
+      <Filter>Source\SquirrelLife\Private\Training</Filter>
+    </ClCompile>
+    <Filter Include="Source\SquirrelLife\Public">
+      <UniqueIdentifier>{E3AD57C2-DEA9-3413-B884-CEB4C5127C01}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\SquirrelLife.h">
+      <Filter>Source\SquirrelLife\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\SquirrelLife\Public\Training">
+      <UniqueIdentifier>{555F3DD9-238A-3758-90CF-FC2489049A50}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodActor.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserActor.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserWidget.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingCameraActor.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingGameMode.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPawn.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPlayerController.h">
+      <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
     <None Include="..\..\Source\SquirrelLife\SquirrelLife.Build.cs">
       <Filter>Source\SquirrelLife</Filter>
     </None>
-    <ClCompile Include="..\..\Source\SquirrelLife\SquirrelLife.cpp">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\SquirrelLife.h">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\SquirrelLifeCharacter.cpp">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\SquirrelLifeCharacter.h">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\SquirrelLifeGameMode.cpp">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\SquirrelLifeGameMode.h">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\SquirrelLifePlayerController.cpp">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\SquirrelLifePlayerController.h">
-      <Filter>Source\SquirrelLife</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_Combat">
-      <UniqueIdentifier>{C2A8B21B-A73F-3829-87D0-8A58495049A6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\SquirrelLife\Variant_Combat\AI">
-      <UniqueIdentifier>{23C73129-E82F-3B37-89C2-ACDDD0F24B69}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatAIController.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatAIController.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatEnemy.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatEnemy.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatEnemySpawner.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatEnemySpawner.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatStateTreeUtility.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\AI\CombatStateTreeUtility.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\AI\EnvQueryContext_Danger.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\AI\EnvQueryContext_Danger.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\AI\EnvQueryContext_Player.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\AI\EnvQueryContext_Player.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\AI</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_Combat\Animation">
-      <UniqueIdentifier>{BAAC6123-7179-38BD-986F-4597A0CC8887}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Animation\AnimNotify_CheckChargedAttack.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Animation</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Animation\AnimNotify_CheckChargedAttack.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Animation</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Animation\AnimNotify_CheckCombo.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Animation</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Animation\AnimNotify_CheckCombo.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Animation</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Animation\AnimNotify_DoAttackTrace.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Animation</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Animation\AnimNotify_DoAttackTrace.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Animation</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\CombatCharacter.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\CombatCharacter.h">
-      <Filter>Source\SquirrelLife\Variant_Combat</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\CombatGameMode.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\CombatGameMode.h">
-      <Filter>Source\SquirrelLife\Variant_Combat</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\CombatPlayerController.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\CombatPlayerController.h">
-      <Filter>Source\SquirrelLife\Variant_Combat</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_Combat\Gameplay">
-      <UniqueIdentifier>{0F139A23-48E1-3F11-ABAE-FBA28762A9EA}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatActivationVolume.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatActivationVolume.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatCheckpointVolume.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatCheckpointVolume.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatDamageableBox.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatDamageableBox.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatDummy.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatDummy.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatLavaFloor.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Gameplay\CombatLavaFloor.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Gameplay</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_Combat\Interfaces">
-      <UniqueIdentifier>{0DE6F0E6-51B7-326B-AEDD-C08B01E59A10}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Interfaces\CombatActivatable.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Interfaces</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Interfaces\CombatActivatable.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Interfaces</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Interfaces\CombatAttacker.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Interfaces</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Interfaces\CombatAttacker.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Interfaces</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\Interfaces\CombatDamageable.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\Interfaces</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\Interfaces\CombatDamageable.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\Interfaces</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_Combat\UI">
-      <UniqueIdentifier>{B74ED549-E24D-353C-A931-51490252903A}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Combat\UI\CombatLifeBar.cpp">
-      <Filter>Source\SquirrelLife\Variant_Combat\UI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Combat\UI\CombatLifeBar.h">
-      <Filter>Source\SquirrelLife\Variant_Combat\UI</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_Platforming">
-      <UniqueIdentifier>{AFC64046-80EB-35AD-998C-6E4A23BF17CA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\SquirrelLife\Variant_Platforming\Animation">
-      <UniqueIdentifier>{650AFA8F-4297-31E3-93BD-367DAD59D8EC}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Platforming\Animation\AnimNotify_EndDash.cpp">
-      <Filter>Source\SquirrelLife\Variant_Platforming\Animation</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Platforming\Animation\AnimNotify_EndDash.h">
-      <Filter>Source\SquirrelLife\Variant_Platforming\Animation</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Platforming\PlatformingCharacter.cpp">
-      <Filter>Source\SquirrelLife\Variant_Platforming</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Platforming\PlatformingCharacter.h">
-      <Filter>Source\SquirrelLife\Variant_Platforming</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Platforming\PlatformingGameMode.cpp">
-      <Filter>Source\SquirrelLife\Variant_Platforming</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Platforming\PlatformingGameMode.h">
-      <Filter>Source\SquirrelLife\Variant_Platforming</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_Platforming\PlatformingPlayerController.cpp">
-      <Filter>Source\SquirrelLife\Variant_Platforming</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_Platforming\PlatformingPlayerController.h">
-      <Filter>Source\SquirrelLife\Variant_Platforming</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_SideScrolling">
-      <UniqueIdentifier>{B94F57A8-421B-365D-8EF5-369612CC3B75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\SquirrelLife\Variant_SideScrolling\AI">
-      <UniqueIdentifier>{A5629829-BFD5-3EC2-B0F4-72B8AFB7CC7B}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\AI\SideScrollingAIController.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\AI\SideScrollingAIController.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\AI\SideScrollingNPC.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\AI\SideScrollingNPC.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\AI\SideScrollingStateTreeUtility.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\AI\SideScrollingStateTreeUtility.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\AI</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_SideScrolling\Gameplay">
-      <UniqueIdentifier>{F1271666-814A-3550-86D3-28A3F404BCC7}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingJumpPad.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingJumpPad.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingMovingPlatform.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingMovingPlatform.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingPickup.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingPickup.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingSoftPlatform.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Gameplay\SideScrollingSoftPlatform.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Gameplay</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_SideScrolling\Interfaces">
-      <UniqueIdentifier>{A2517601-9810-3889-B9E4-3D697D34DEDA}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Interfaces\SideScrollingInteractable.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Interfaces</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\Interfaces\SideScrollingInteractable.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\Interfaces</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingCameraManager.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingCameraManager.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingCharacter.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingCharacter.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingGameMode.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingGameMode.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingPlayerController.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\SideScrollingPlayerController.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling</Filter>
-    </ClInclude>
-    <Filter Include="Source\SquirrelLife\Variant_SideScrolling\UI">
-      <UniqueIdentifier>{7EF1FABD-14CF-3EE8-8DBA-147667BFD17D}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\SquirrelLife\Variant_SideScrolling\UI\SideScrollingUI.cpp">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\UI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\SquirrelLife\Variant_SideScrolling\UI\SideScrollingUI.h">
-      <Filter>Source\SquirrelLife\Variant_SideScrolling\UI</Filter>
-    </ClInclude>
     <None Include="..\..\SquirrelLife.uproject" />
   </ItemGroup>
 </Project>

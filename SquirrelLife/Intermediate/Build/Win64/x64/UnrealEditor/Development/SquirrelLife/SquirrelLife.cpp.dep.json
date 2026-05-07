@@ -1,12 +1,12 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\noah\\documents\\github\\squirrellife\\squirrellife\\source\\squirrellife\\squirrellife.cpp",
+        "Source": "c:\\users\\noah\\documents\\github\\squirrellife\\squirrellife\\source\\squirrellife\\private\\squirrellife.cpp",
         "ProvidedModule": "",
         "PCH": "c:\\users\\noah\\documents\\github\\squirrellife\\squirrellife\\intermediate\\build\\win64\\x64\\squirrellifeeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
         "Includes": [
             "c:\\users\\noah\\documents\\github\\squirrellife\\squirrellife\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\squirrellife\\definitions.squirrellife.h",
-            "c:\\users\\noah\\documents\\github\\squirrellife\\squirrellife\\source\\squirrellife\\squirrellife.h"
+            "c:\\users\\noah\\documents\\github\\squirrellife\\squirrellife\\source\\squirrellife\\public\\squirrellife.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []
