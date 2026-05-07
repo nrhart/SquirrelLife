@@ -1289,3 +1289,326 @@ LogConfig: Set CVar [[r.VRS.ContrastAdaptiveShading:1]]
 [2026.05.07-17.57.23:575][  9]LogEOSSDK: LogEOS: SDK Config Data - Watermark: 1288400251
 [2026.05.07-17.57.23:576][  9]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 4.898887, Update Interval: 326.875214
 [2026.05.07-17.57.24:572][ 12]LogEOSSDK: LogEOSAuth: UpdateUserAuthToken: User ClientId: xyz...459 AccountId: 0e7...1e2 Access[Expires: 2026.05.07-19.57.24 Remaining: 7200.01] Refresh[Expires: 2026-11-03T17:21:11.566Z Remaining: 15549827.57] State: Valid
+[2026.05.07-17.57.24:907][ 13]LogEOSSDK: LogEOSAuth: UserAuthGenerated: Received FUserAuthToken
+[2026.05.07-17.57.25:907][ 16]LogEOSSDK: LogEOSMessaging: EpicConnectMessagingClient::CreateStompClient Creating Stomp Client with CorrelationId = EOS-_WXg6h-8IkOXQon7Gz80RQ-3Hs-szaxZE6PiMgsODGgwg
+[2026.05.07-17.57.25:908][ 16]LogEOSSDK: LogEOSAuth: UserAuthGenerated: Login complete: EOS_Success
+[2026.05.07-17.57.25:908][ 16]LogFab: Display: User logged in
+[2026.05.07-17.57.25:908][ 16]LogFab: Display: User client id: xyza7891REBVsEqSJRRNXmlS7EQHM459
+[2026.05.07-17.57.26:574][ 18]LogEOSSDK: Warning: LogEOS: Error response received from backend. ServiceName=[Friend], OperationName=[GetBlockList], Url=[<Redacted>], HttpStatus=[403], ErrorCode=[errors.com.epicgames.common.insufficient_scopes], NumericErrorCode=[1056], ErrorMessage=[Insufficient access scopes. Expected: [friends_list]], CorrId=[EOS-_WXg6h-8IkOXQon7Gz80RQ-_tAGIpPTSEKCLmMuLvt5aQ]
+[2026.05.07-17.57.35:599][171]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2026.05.07-17.57.35:603][171]LogContentBundle: [ParkLevel(Editor)] Generating Streaming for 0 Content Bundles.
+[2026.05.07-17.57.35:603][171]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' started...
+[2026.05.07-17.57.35:604][171]LogWorldPartition: FSpatialHashSettings::UpdateSettings : UseAlignedGridLevels = 0, SnapNonAlignedGridLevelsToLowerLevels = 0, PlaceSmallActorsUsingLocation = 1, PlacePartitionActorsUsingLocation = 1
+[2026.05.07-17.57.35:604][171]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' took 608 us
+[2026.05.07-17.57.35:604][171]LogCameraSystemEditor: No camera objects needed building (inspected 0 objects)
+[2026.05.07-17.57.35:604][171]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2026.05.07-17.57.35:609][171]LogOnline: OSS: Created online subsystem instance for: NULL
+[2026.05.07-17.57.35:609][171]LogOnline: OSS: TryLoadSubsystemAndSetDefault: Loaded subsystem for type [NULL]
+[2026.05.07-17.57.35:609][171]LogPlayLevel: Creating play world package: /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.57.35:612][171]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE started...
+[2026.05.07-17.57.35:612][171]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE took 478 us
+[2026.05.07-17.57.35:612][171]LogPlayLevel: PIE: StaticDuplicateObject took: (0.002910s)
+[2026.05.07-17.57.35:612][171]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Maps/ParkLevel.ParkLevel to /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel (0.003050s)
+[2026.05.07-17.57.35:653][171]LogUObjectHash: Compacting FUObjectHashTables data took   0.36ms
+[2026.05.07-17.57.35:654][171]LogChaosDD: Creating Chaos Debug Draw Scene for world ParkLevel
+[2026.05.07-17.57.35:656][171]LogWorldPartition: ULevel::OnLevelLoaded(ParkLevel)(bIsOwningWorldGameWorld=1, bIsOwningWorldPartitioned=1, InitializeForMainWorld=1, InitializeForEditor=0, InitializeForGame=1)
+[2026.05.07-17.57.35:656][171]LogWorldPartition: Display: WorldPartition initialize started...
+[2026.05.07-17.57.35:656][171]LogWorldPartition: UWorldPartition::Initialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel, World Type = PIE, IsMainWorldPartition = 1, Location = V(0), Rotation = R(0), IsEditor = 0, IsGame = 0, IsPIEWorldTravel = 0, IsCooking = 0
+[2026.05.07-17.57.35:656][171]LogWorldPartition: UWorldPartition::Initialize Context : World NetMode = Standalone, IsServer = 0, IsDedicatedServer = 0, IsServerStreamingEnabled = 0, IsServerStreamingOutEnabled = 0, IsUsingMakingVisibleTransaction = 0, IsUsingMakingInvisibleTransaction = 0
+[2026.05.07-17.57.35:657][171]LogWorldPartition: Display: WorldPartition initialize took 920 us (total: 35.641 ms)
+[2026.05.07-17.57.35:657][171]LogPlayLevel: PIE: World Init took: (0.002802s)
+[2026.05.07-17.57.35:657][171]LogAudio: Display: Creating Audio Device:                 Id: 2, Scope: Unique, Realtime: True
+[2026.05.07-17.57.35:657][171]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2026.05.07-17.57.35:657][171]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2026.05.07-17.57.35:657][171]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2026.05.07-17.57.35:657][171]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2026.05.07-17.57.35:658][171]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2026.05.07-17.57.35:658][171]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2026.05.07-17.57.35:658][171]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2026.05.07-17.57.35:658][171]LogAudio: Display: AudioDevice MaxSources: 32
+[2026.05.07-17.57.35:658][171]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2026.05.07-17.57.35:658][171]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2026.05.07-17.57.35:658][171]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2026.05.07-17.57.35:660][171]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2026.05.07-17.57.35:666][171]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Console', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.57.35:666][171]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Console', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.57.35:668][171]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Multimedia', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.57.35:668][171]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Multimedia', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.57.35:669][171]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Communications', Device='Headset Earphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.57.35:670][171]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Communications', Device='Headset Microphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.57.35:677][171]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Arctis Pro Wireless Game)
+[2026.05.07-17.57.35:677][171]LogAudioMixer: Display: Initializing Sound Submixes...
+[2026.05.07-17.57.35:677][171]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2026.05.07-17.57.35:677][171]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2026.05.07-17.57.35:678][171]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=2
+[2026.05.07-17.57.35:678][171]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=2
+[2026.05.07-17.57.35:680][171]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=2
+[2026.05.07-17.57.35:680][171]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=2
+[2026.05.07-17.57.35:680][171]LogInit: FAudioDevice initialized with ID 2.
+[2026.05.07-17.57.35:681][171]LogAudio: Display: Audio Device (ID: 2) registered with world 'ParkLevel'.
+[2026.05.07-17.57.35:681][171]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 2
+[2026.05.07-17.57.35:683][171]LogLoad: Game class is 'BP_MainGameMode_C'
+[2026.05.07-17.57.35:685][171]LogWorld: Bringing World /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel up for play (max tick rate 0) at 2026.05.07-11.57.35
+[2026.05.07-17.57.35:685][171]LogWorld: Bringing up level for play took: 0.000936
+[2026.05.07-17.57.35:688][171]LogOnline: OSS: Created online subsystem instance for: :Context_1
+[2026.05.07-17.57.35:690][171]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2026.05.07-17.57.35:691][171]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently_IncludingInitialMouseDown -> CaptureDuringMouseDown
+[2026.05.07-17.57.35:691][171]PIE: Server logged in
+[2026.05.07-17.57.35:692][171]PIE: Play in editor total start time 0.089 seconds.
+[2026.05.07-17.57.35:736][171]LogRenderer: Recreating Persistent SBTs due to initializer changes: 
+		NumShaderSlotsPerGeometrySegment changed: current: 1 - new: 2
+		NumGeometrySegments changed: current: 0 - new: 512
+[2026.05.07-17.57.42:166][925]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.57.42:166][925]LogWorld: BeginTearingDown for /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.57.42:166][925]LogWorld: UWorld::CleanupWorld for ParkLevel, bSessionEnded=true, bCleanupResources=true
+[2026.05.07-17.57.42:167][925]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.57.42:167][925]LogWorldPartition: UWorldPartition::Uninitialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel
+[2026.05.07-17.57.42:169][925]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2026.05.07-17.57.42:170][925]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.57.42:183][925]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.57.42:183][925]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 2
+[2026.05.07-17.57.42:183][925]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=2, StreamState=4
+[2026.05.07-17.57.42:186][925]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=2, StreamState=2
+[2026.05.07-17.57.42:192][925]LogUObjectHash: Compacting FUObjectHashTables data took   0.35ms
+[2026.05.07-17.57.42:247][930]LogPlayLevel: Display: Destroying online subsystem :Context_1
+[2026.05.07-17.58.01:262][ 53]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2026.05.07-17.58.01:266][ 53]LogContentBundle: [ParkLevel(Editor)] Generating Streaming for 0 Content Bundles.
+[2026.05.07-17.58.01:266][ 53]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' started...
+[2026.05.07-17.58.01:267][ 53]LogWorldPartition: FSpatialHashSettings::UpdateSettings : UseAlignedGridLevels = 0, SnapNonAlignedGridLevelsToLowerLevels = 0, PlaceSmallActorsUsingLocation = 1, PlacePartitionActorsUsingLocation = 1
+[2026.05.07-17.58.01:267][ 53]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' took 544 us (total: 1.152 ms)
+[2026.05.07-17.58.01:267][ 53]LogCameraSystemEditor: No camera objects needed building (inspected 0 objects)
+[2026.05.07-17.58.01:267][ 53]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2026.05.07-17.58.01:305][ 53]LogPlayLevel: Creating play world package: /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.58.01:308][ 53]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE started...
+[2026.05.07-17.58.01:308][ 53]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE took 499 us (total: 977 us)
+[2026.05.07-17.58.01:309][ 53]LogPlayLevel: PIE: StaticDuplicateObject took: (0.002900s)
+[2026.05.07-17.58.01:309][ 53]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Maps/ParkLevel.ParkLevel to /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel (0.003550s)
+[2026.05.07-17.58.01:333][ 53]LogUObjectHash: Compacting FUObjectHashTables data took   0.35ms
+[2026.05.07-17.58.01:334][ 53]LogChaosDD: Creating Chaos Debug Draw Scene for world ParkLevel
+[2026.05.07-17.58.01:336][ 53]LogWorldPartition: ULevel::OnLevelLoaded(ParkLevel)(bIsOwningWorldGameWorld=1, bIsOwningWorldPartitioned=1, InitializeForMainWorld=1, InitializeForEditor=0, InitializeForGame=1)
+[2026.05.07-17.58.01:336][ 53]LogWorldPartition: Display: WorldPartition initialize started...
+[2026.05.07-17.58.01:336][ 53]LogWorldPartition: UWorldPartition::Initialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel, World Type = PIE, IsMainWorldPartition = 1, Location = V(0), Rotation = R(0), IsEditor = 0, IsGame = 0, IsPIEWorldTravel = 0, IsCooking = 0
+[2026.05.07-17.58.01:336][ 53]LogWorldPartition: UWorldPartition::Initialize Context : World NetMode = Standalone, IsServer = 0, IsDedicatedServer = 0, IsServerStreamingEnabled = 0, IsServerStreamingOutEnabled = 0, IsUsingMakingVisibleTransaction = 0, IsUsingMakingInvisibleTransaction = 0
+[2026.05.07-17.58.01:337][ 53]LogWorldPartition: Display: WorldPartition initialize took 887 us (total: 36.528 ms)
+[2026.05.07-17.58.01:337][ 53]LogPlayLevel: PIE: World Init took: (0.002796s)
+[2026.05.07-17.58.01:337][ 53]LogAudio: Display: Creating Audio Device:                 Id: 3, Scope: Unique, Realtime: True
+[2026.05.07-17.58.01:337][ 53]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2026.05.07-17.58.01:337][ 53]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2026.05.07-17.58.01:337][ 53]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2026.05.07-17.58.01:338][ 53]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2026.05.07-17.58.01:338][ 53]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2026.05.07-17.58.01:338][ 53]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2026.05.07-17.58.01:338][ 53]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2026.05.07-17.58.01:338][ 53]LogAudio: Display: AudioDevice MaxSources: 32
+[2026.05.07-17.58.01:338][ 53]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2026.05.07-17.58.01:338][ 53]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2026.05.07-17.58.01:338][ 53]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2026.05.07-17.58.01:341][ 53]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2026.05.07-17.58.01:347][ 53]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Console', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.58.01:347][ 53]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Console', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.58.01:348][ 53]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Multimedia', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.58.01:349][ 53]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Multimedia', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.58.01:350][ 53]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Communications', Device='Headset Earphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.58.01:351][ 53]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Communications', Device='Headset Microphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.58.01:358][ 53]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Arctis Pro Wireless Game)
+[2026.05.07-17.58.01:358][ 53]LogAudioMixer: Display: Initializing Sound Submixes...
+[2026.05.07-17.58.01:358][ 53]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2026.05.07-17.58.01:358][ 53]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2026.05.07-17.58.01:359][ 53]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=3
+[2026.05.07-17.58.01:359][ 53]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=3
+[2026.05.07-17.58.01:362][ 53]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=3
+[2026.05.07-17.58.01:362][ 53]LogInit: FAudioDevice initialized with ID 3.
+[2026.05.07-17.58.01:362][ 53]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=3
+[2026.05.07-17.58.01:362][ 53]LogAudio: Display: Audio Device (ID: 3) registered with world 'ParkLevel'.
+[2026.05.07-17.58.01:362][ 53]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 3
+[2026.05.07-17.58.01:365][ 53]LogLoad: Game class is 'BP_MainGameMode_C'
+[2026.05.07-17.58.01:366][ 53]LogWorld: Bringing World /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel up for play (max tick rate 0) at 2026.05.07-11.58.01
+[2026.05.07-17.58.01:366][ 53]LogWorld: Bringing up level for play took: 0.000935
+[2026.05.07-17.58.01:368][ 53]LogOnline: OSS: Created online subsystem instance for: :Context_4
+[2026.05.07-17.58.01:369][ 53]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2026.05.07-17.58.01:369][ 53]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently_IncludingInitialMouseDown -> CaptureDuringMouseDown
+[2026.05.07-17.58.01:369][ 53]PIE: Server logged in
+[2026.05.07-17.58.01:371][ 53]PIE: Play in editor total start time 0.104 seconds.
+[2026.05.07-17.58.01:405][ 54]LogRenderer: Recreating Persistent SBTs due to initializer changes: 
+		NumShaderSlotsPerGeometrySegment changed: current: 1 - new: 2
+		NumGeometrySegments changed: current: 0 - new: 512
+[2026.05.07-17.58.04:686][440]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.58.04:686][440]LogWorld: BeginTearingDown for /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.58.04:686][440]LogWorld: UWorld::CleanupWorld for ParkLevel, bSessionEnded=true, bCleanupResources=true
+[2026.05.07-17.58.04:687][440]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.58.04:699][440]LogWorldPartition: UWorldPartition::Uninitialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel
+[2026.05.07-17.58.04:701][440]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2026.05.07-17.58.04:703][440]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.58.04:716][440]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.58.04:717][440]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 3
+[2026.05.07-17.58.04:717][440]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=3, StreamState=4
+[2026.05.07-17.58.04:720][440]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=3, StreamState=2
+[2026.05.07-17.58.04:727][440]LogUObjectHash: Compacting FUObjectHashTables data took   0.35ms
+[2026.05.07-17.58.04:795][441]LogPlayLevel: Display: Destroying online subsystem :Context_4
+[2026.05.07-17.58.12:661][289]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2026.05.07-17.58.12:665][289]LogContentBundle: [ParkLevel(Editor)] Generating Streaming for 0 Content Bundles.
+[2026.05.07-17.58.12:665][289]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' started...
+[2026.05.07-17.58.12:666][289]LogWorldPartition: FSpatialHashSettings::UpdateSettings : UseAlignedGridLevels = 0, SnapNonAlignedGridLevelsToLowerLevels = 0, PlaceSmallActorsUsingLocation = 1, PlacePartitionActorsUsingLocation = 1
+[2026.05.07-17.58.12:666][289]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' took 554 us (total: 1.707 ms)
+[2026.05.07-17.58.12:666][289]LogCameraSystemEditor: No camera objects needed building (inspected 0 objects)
+[2026.05.07-17.58.12:666][289]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2026.05.07-17.58.12:697][289]LogPlayLevel: Creating play world package: /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.58.12:700][289]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE started...
+[2026.05.07-17.58.12:701][289]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE took 818 us (total: 1.796 ms)
+[2026.05.07-17.58.12:701][289]LogPlayLevel: PIE: StaticDuplicateObject took: (0.003482s)
+[2026.05.07-17.58.12:702][289]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Maps/ParkLevel.ParkLevel to /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel (0.006433s)
+[2026.05.07-17.58.12:713][289]LogUObjectHash: Compacting FUObjectHashTables data took   0.53ms
+[2026.05.07-17.58.12:715][289]LogChaosDD: Creating Chaos Debug Draw Scene for world ParkLevel
+[2026.05.07-17.58.12:717][289]LogWorldPartition: ULevel::OnLevelLoaded(ParkLevel)(bIsOwningWorldGameWorld=1, bIsOwningWorldPartitioned=1, InitializeForMainWorld=1, InitializeForEditor=0, InitializeForGame=1)
+[2026.05.07-17.58.12:718][289]LogWorldPartition: Display: WorldPartition initialize started...
+[2026.05.07-17.58.12:720][289]LogWorldPartition: UWorldPartition::Initialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel, World Type = PIE, IsMainWorldPartition = 1, Location = V(0), Rotation = R(0), IsEditor = 0, IsGame = 0, IsPIEWorldTravel = 0, IsCooking = 0
+[2026.05.07-17.58.12:720][289]LogWorldPartition: UWorldPartition::Initialize Context : World NetMode = Standalone, IsServer = 0, IsDedicatedServer = 0, IsServerStreamingEnabled = 0, IsServerStreamingOutEnabled = 0, IsUsingMakingVisibleTransaction = 0, IsUsingMakingInvisibleTransaction = 0
+[2026.05.07-17.58.12:721][289]LogWorldPartition: Display: WorldPartition initialize took 3.894 ms (total: 40.422 ms)
+[2026.05.07-17.58.12:721][289]LogPlayLevel: PIE: World Init took: (0.006800s)
+[2026.05.07-17.58.12:721][289]LogAudio: Display: Creating Audio Device:                 Id: 4, Scope: Unique, Realtime: True
+[2026.05.07-17.58.12:721][289]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2026.05.07-17.58.12:721][289]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2026.05.07-17.58.12:721][289]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2026.05.07-17.58.12:721][289]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2026.05.07-17.58.12:722][289]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2026.05.07-17.58.12:722][289]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2026.05.07-17.58.12:722][289]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2026.05.07-17.58.12:722][289]LogAudio: Display: AudioDevice MaxSources: 32
+[2026.05.07-17.58.12:722][289]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2026.05.07-17.58.12:722][289]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2026.05.07-17.58.12:722][289]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2026.05.07-17.58.12:725][289]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2026.05.07-17.58.12:731][289]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Console', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.58.12:731][289]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Console', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.58.12:732][289]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Multimedia', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.58.12:733][289]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Multimedia', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.58.12:734][289]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Communications', Device='Headset Earphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.58.12:735][289]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Communications', Device='Headset Microphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.58.12:742][289]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Arctis Pro Wireless Game)
+[2026.05.07-17.58.12:742][289]LogAudioMixer: Display: Initializing Sound Submixes...
+[2026.05.07-17.58.12:742][289]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2026.05.07-17.58.12:743][289]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2026.05.07-17.58.12:743][289]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=4
+[2026.05.07-17.58.12:743][289]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=4
+[2026.05.07-17.58.12:746][289]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=4
+[2026.05.07-17.58.12:746][289]LogInit: FAudioDevice initialized with ID 4.
+[2026.05.07-17.58.12:746][289]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=4
+[2026.05.07-17.58.12:746][289]LogAudio: Display: Audio Device (ID: 4) registered with world 'ParkLevel'.
+[2026.05.07-17.58.12:746][289]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 4
+[2026.05.07-17.58.12:749][289]LogLoad: Game class is 'BP_MainGameMode_C'
+[2026.05.07-17.58.12:750][289]LogWorld: Bringing World /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel up for play (max tick rate 0) at 2026.05.07-11.58.12
+[2026.05.07-17.58.12:750][289]LogWorld: Bringing up level for play took: 0.000884
+[2026.05.07-17.58.12:752][289]LogOnline: OSS: Created online subsystem instance for: :Context_5
+[2026.05.07-17.58.12:754][289]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2026.05.07-17.58.12:754][289]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently_IncludingInitialMouseDown -> CaptureDuringMouseDown
+[2026.05.07-17.58.12:754][289]PIE: Server logged in
+[2026.05.07-17.58.12:755][289]PIE: Play in editor total start time 0.09 seconds.
+[2026.05.07-17.58.12:792][290]LogRenderer: Recreating Persistent SBTs due to initializer changes: 
+		NumShaderSlotsPerGeometrySegment changed: current: 1 - new: 2
+		NumGeometrySegments changed: current: 0 - new: 512
+[2026.05.07-17.58.19:936][127]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.58.19:936][127]LogWorld: BeginTearingDown for /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.58.19:937][127]LogWorld: UWorld::CleanupWorld for ParkLevel, bSessionEnded=true, bCleanupResources=true
+[2026.05.07-17.58.19:937][127]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.58.19:937][127]LogWorldPartition: UWorldPartition::Uninitialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel
+[2026.05.07-17.58.19:939][127]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2026.05.07-17.58.19:940][127]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.58.19:951][127]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.58.19:951][127]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 4
+[2026.05.07-17.58.19:951][127]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=4, StreamState=4
+[2026.05.07-17.58.19:953][127]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=4, StreamState=2
+[2026.05.07-17.58.19:959][127]LogUObjectHash: Compacting FUObjectHashTables data took   0.35ms
+[2026.05.07-17.58.20:033][128]LogPlayLevel: Display: Destroying online subsystem :Context_5
+[2026.05.07-17.58.34:705][731]LogDebuggerCommands: Repeating last play command: Selected Viewport
+[2026.05.07-17.58.34:710][731]LogContentBundle: [ParkLevel(Editor)] Generating Streaming for 0 Content Bundles.
+[2026.05.07-17.58.34:710][731]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' started...
+[2026.05.07-17.58.34:710][731]LogWorldPartition: FSpatialHashSettings::UpdateSettings : UseAlignedGridLevels = 0, SnapNonAlignedGridLevelsToLowerLevels = 0, PlaceSmallActorsUsingLocation = 1, PlacePartitionActorsUsingLocation = 1
+[2026.05.07-17.58.34:710][731]LogWorldPartition: Display: GenerateStreaming for 'ParkLevel' took 536 us (total: 2.243 ms)
+[2026.05.07-17.58.34:711][731]LogCameraSystemEditor: No camera objects needed building (inspected 0 objects)
+[2026.05.07-17.58.34:711][731]LogPlayLevel: PlayLevel: No blueprints needed recompiling
+[2026.05.07-17.58.34:736][731]LogPlayLevel: Creating play world package: /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.58.34:738][731]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE started...
+[2026.05.07-17.58.34:738][731]LogWorldPartition: Display: UWorldPartition::PostDuplicatePIE took 424 us (total: 2.220 ms)
+[2026.05.07-17.58.34:739][731]LogPlayLevel: PIE: StaticDuplicateObject took: (0.002746s)
+[2026.05.07-17.58.34:739][731]LogPlayLevel: PIE: Created PIE world by copying editor world from /Game/Maps/ParkLevel.ParkLevel to /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel (0.002969s)
+[2026.05.07-17.58.34:752][731]LogUObjectHash: Compacting FUObjectHashTables data took   0.40ms
+[2026.05.07-17.58.34:776][731]LogChaosDD: Creating Chaos Debug Draw Scene for world ParkLevel
+[2026.05.07-17.58.34:788][731]LogWorldPartition: ULevel::OnLevelLoaded(ParkLevel)(bIsOwningWorldGameWorld=1, bIsOwningWorldPartitioned=1, InitializeForMainWorld=1, InitializeForEditor=0, InitializeForGame=1)
+[2026.05.07-17.58.34:789][731]LogWorldPartition: Display: WorldPartition initialize started...
+[2026.05.07-17.58.34:790][731]LogWorldPartition: UWorldPartition::Initialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel, World Type = PIE, IsMainWorldPartition = 1, Location = V(0), Rotation = R(0), IsEditor = 0, IsGame = 0, IsPIEWorldTravel = 0, IsCooking = 0
+[2026.05.07-17.58.34:790][731]LogWorldPartition: UWorldPartition::Initialize Context : World NetMode = Standalone, IsServer = 0, IsDedicatedServer = 0, IsServerStreamingEnabled = 0, IsServerStreamingOutEnabled = 0, IsUsingMakingVisibleTransaction = 0, IsUsingMakingInvisibleTransaction = 0
+[2026.05.07-17.58.34:791][731]LogWorldPartition: Display: WorldPartition initialize took 2.585 ms (total: 43.008 ms)
+[2026.05.07-17.58.34:793][731]LogPlayLevel: PIE: World Init took: (0.038770s)
+[2026.05.07-17.58.34:798][731]LogAudio: Display: Creating Audio Device:                 Id: 5, Scope: Unique, Realtime: True
+[2026.05.07-17.58.34:798][731]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2026.05.07-17.58.34:798][731]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2026.05.07-17.58.34:798][731]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2026.05.07-17.58.34:799][731]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2026.05.07-17.58.34:799][731]LogAudioMixer: Display: 	Number of buffers to queue:			  1
+[2026.05.07-17.58.34:799][731]LogAudioMixer: Display: 	Max Channels (voices):				  32
+[2026.05.07-17.58.34:799][731]LogAudioMixer: Display: 	Number of Async Source Workers:		  4
+[2026.05.07-17.58.34:799][731]LogAudio: Display: AudioDevice MaxSources: 32
+[2026.05.07-17.58.34:799][731]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2026.05.07-17.58.34:800][731]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2026.05.07-17.58.34:800][731]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2026.05.07-17.58.34:803][731]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2026.05.07-17.58.34:809][731]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Console', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.58.34:810][731]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Console', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.58.34:812][731]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Multimedia', Device='Headphones (Arctis Pro Wireless Game)'
+[2026.05.07-17.58.34:813][731]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Multimedia', Device='Microphone (2- fifine Microphone)'
+[2026.05.07-17.58.34:814][731]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Render Role='Communications', Device='Headset Earphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.58.34:815][731]LogAudioEnumeration: Display: FWindowsMMDeviceCache: Default Capture Role='Communications', Device='Headset Microphone (Arctis Pro Wireless Chat)'
+[2026.05.07-17.58.34:823][731]LogAudioMixer: Display: Using Audio Hardware Device Headphones (Arctis Pro Wireless Game)
+[2026.05.07-17.58.34:823][731]LogAudioMixer: Display: Initializing Sound Submixes...
+[2026.05.07-17.58.34:823][731]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2026.05.07-17.58.34:823][731]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2026.05.07-17.58.34:823][731]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=5
+[2026.05.07-17.58.34:824][731]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=5
+[2026.05.07-17.58.34:827][731]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=5
+[2026.05.07-17.58.34:827][731]LogInit: FAudioDevice initialized with ID 5.
+[2026.05.07-17.58.34:827][731]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=5
+[2026.05.07-17.58.34:827][731]LogAudio: Display: Audio Device (ID: 5) registered with world 'ParkLevel'.
+[2026.05.07-17.58.34:827][731]LogAudioMixer: Initializing Audio Bus Subsystem for audio device with ID 5
+[2026.05.07-17.58.34:830][731]LogLoad: Game class is 'BP_MainGameMode_C'
+[2026.05.07-17.58.34:831][731]LogWorld: Bringing World /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel up for play (max tick rate 0) at 2026.05.07-11.58.34
+[2026.05.07-17.58.34:831][731]LogWorld: Bringing up level for play took: 0.000973
+[2026.05.07-17.58.34:835][731]LogOnline: OSS: Created online subsystem instance for: :Context_6
+[2026.05.07-17.58.34:836][731]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2026.05.07-17.58.34:836][731]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently_IncludingInitialMouseDown -> CaptureDuringMouseDown
+[2026.05.07-17.58.34:837][731]PIE: Server logged in
+[2026.05.07-17.58.34:838][731]PIE: Play in editor total start time 0.128 seconds.
+[2026.05.07-17.58.34:874][732]LogRenderer: Recreating Persistent SBTs due to initializer changes: 
+		NumShaderSlotsPerGeometrySegment changed: current: 1 - new: 2
+		NumGeometrySegments changed: current: 0 - new: 512
+[2026.05.07-17.58.50:106][547]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.58.50:106][547]LogWorld: BeginTearingDown for /Game/Maps/UEDPIE_0_ParkLevel
+[2026.05.07-17.58.50:107][547]LogWorld: UWorld::CleanupWorld for ParkLevel, bSessionEnded=true, bCleanupResources=true
+[2026.05.07-17.58.50:107][547]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.58.50:107][547]LogWorldPartition: UWorldPartition::Uninitialize : World = /Game/Maps/UEDPIE_0_ParkLevel.ParkLevel
+[2026.05.07-17.58.50:108][547]LogPlayLevel: Display: Shutting down PIE online subsystems
+[2026.05.07-17.58.50:109][547]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.05.07-17.58.50:122][547]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.05.07-17.58.50:123][547]LogAudioMixer: Deinitializing Audio Bus Subsystem for audio device with ID 5
+[2026.05.07-17.58.50:123][547]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=5, StreamState=4
+[2026.05.07-17.58.50:126][547]LogAudioMixer: Display: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=5, StreamState=2
+[2026.05.07-17.58.50:132][547]LogUObjectHash: Compacting FUObjectHashTables data took   0.34ms
+[2026.05.07-17.58.50:185][548]LogPlayLevel: Display: Destroying online subsystem :Context_6
+[2026.05.07-17.58.53:708][963]LogUObjectHash: Compacting FUObjectHashTables data took   0.33ms
+[2026.05.07-17.58.54:506][963]LogSlate: Window 'Save Content' being destroyed
+[2026.05.07-17.58.54:528][963]LogFileHelpers: InternalPromptForCheckoutAndSave started...
+[2026.05.07-17.58.54:594][963]LogFileHelpers: Saving Package: /Game/__ExternalActors__/Maps/ParkLevel/2/FN/8AUDJV5BL8RC6DUB30WP8W
+[2026.05.07-17.58.54:597][963]LogSavePackage: Moving output files for package: /Game/__ExternalActors__/Maps/ParkLevel/2/FN/8AUDJV5BL8RC6DUB30WP8W
+[2026.05.07-17.58.54:597][963]LogSavePackage: Moving '../../../../../../Users/Noah/Documents/GitHub/SquirrelLife/SquirrelLife/Saved/8AUDJV5BL8RC6DUB30WP8W21A6EC3D4186700CBC559C966990FBFF.tmp' to '../../../../../../Users/Noah/Documents/GitHub/SquirrelLife/SquirrelLife/Content/__ExternalActors__/Maps/ParkLevel/2/FN/8AUDJV5BL8RC6DUB30WP8W.uasset'
+[2026.05.07-17.58.54:610][963]LogFileHelpers: InternalPromptForCheckoutAndSave took 79.700 ms
+[2026.05.07-17.58.54:684][963]LogContentValidation: Enabled validators:
+[2026.05.07-17.58.54:684][963]LogContentValidation: 	/Script/DataValidation.DirtyFilesChangelistValidator
+[2026.05.07-17.58.54:684][963]LogContentValidation: 	/Script/DataValidation.EditorValidator_Localization
+[2026.05.07-17.58.54:685][963]LogContentValidation: 	/Script/DataValidation.EditorValidator_Material
+[2026.05.07-17.58.54:685][963]LogContentValidation: 	/Script/DataValidation.PackageFileValidator
+[2026.05.07-17.58.54:685][963]LogContentValidation: 	/Script/DataValidation.WorldPartitionChangelistValidator
+[2026.05.07-17.58.54:685][963]LogContentValidation: 	/Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2026.05.07-17.58.54:685][963]LogContentValidation: Display: Starting to validate 1 assets (1 associated objects such as actors)
+[2026.05.07-17.58.54:685][963]LogContentValidation: Additional assets added for validation by 0 validators:
+[2026.05.07-17.58.54:686][963]AssetCheck: /Game/Maps/ParkLevel Validating asset
+[2026.05.07-17.58.54:686][963]LogContentValidation: Validated asset counts for 1 validators:
+[2026.05.07-17.58.54:686][963]LogContentValidation:   /Script/DataValidation.EditorValidator_Localization : 1
