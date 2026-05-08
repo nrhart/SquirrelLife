@@ -79,8 +79,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0"))
 	float DragFollowSpeed = 1800.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0"))
+	float VisualTurnInterpSpeed = 8.0f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
 	bool bSnapToMouseWhileDragging = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
+	bool bSweepDragMovement = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
 	float PatrolDistanceFromSpawn = 420.0f;
@@ -89,19 +95,19 @@ protected:
 	float PatrolAcceptanceRadius = 20.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
-	float RandomWanderMinDistance = 110.0f;
+	float RandomWanderMinDistance = 140.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
-	float RandomWanderMaxDistance = 280.0f;
+	float RandomWanderMaxDistance = 340.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
-	float RandomWanderMinDepthDistance = 4.0f;
+	float RandomWanderMinDepthDistance = 8.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
-	float RandomWanderMaxDepthDistance = 18.0f;
+	float RandomWanderMaxDepthDistance = 28.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
-	float RandomWanderMaxDepthOffset = 45.0f;
+	float RandomWanderMaxDepthOffset = 65.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "s"))
 	float RandomWanderMinIdleTime = 1.2f;
@@ -200,6 +206,7 @@ protected:
 	FVector DragTarget = FVector::ZeroVector;
 	FVector PreviousActorLocation = FVector::ZeroVector;
 	float VisualMovementSpeed = 0.0f;
+	float TargetVisualYaw = 0.0f;
 	bool bWaitingToConsumeDroppedFood = false;
 	bool bHasRandomWanderTarget = false;
 	bool bIsEating = false;
@@ -212,6 +219,8 @@ protected:
 	void ApplyVisualTuning();
 	void ChooseNextRandomWanderTarget();
 	void MoveToward(const FVector& Target, float Speed, float DeltaSeconds);
+	void FaceMovementDirection(float DeltaX);
+	void UpdateVisualFacing(float DeltaSeconds);
 	void ApplyGravity(float DeltaSeconds);
 	bool UpdateAutoFoodSeeking(float DeltaSeconds);
 	void UpdateRandomWander(float DeltaSeconds);

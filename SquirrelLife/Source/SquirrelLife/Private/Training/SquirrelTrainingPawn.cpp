@@ -81,6 +81,7 @@ void ASquirrelTrainingPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	ApplyVisualTuning();
+	TargetVisualYaw = VisualRoot ? VisualRoot->GetRelativeRotation().Yaw : 0.0f;
 	PreviousActorLocation = GetActorLocation();
 	EnergyLevel = FMath::Clamp(StartingEnergyLevel, 0, MaxEnergyLevel);
 	EnergyProgressPoints = 0;
@@ -128,6 +129,7 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 
 		VerticalVelocity = 0.0f;
 		bIsGrounded = false;
+		UpdateVisualFacing(DeltaSeconds);
 		return;
 	}
 
@@ -136,6 +138,7 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 		bIsSeekingFood = false;
 		UpdateEating(DeltaSeconds);
 		ApplyGravity(DeltaSeconds);
+		UpdateVisualFacing(DeltaSeconds);
 		return;
 	}
 
@@ -149,6 +152,7 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 		PostEatPatrolCooldownRemaining = FMath::Max(PostEatPatrolCooldownRemaining - DeltaSeconds, 0.0f);
 		ApplyGravity(DeltaSeconds);
 		UpdateDropFoodConsumption(DeltaSeconds);
+		UpdateVisualFacing(DeltaSeconds);
 		return;
 	}
 
@@ -160,6 +164,7 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 
 	ApplyGravity(DeltaSeconds);
 	UpdateDropFoodConsumption(DeltaSeconds);
+	UpdateVisualFacing(DeltaSeconds);
 }
 
 void ASquirrelTrainingPawn::ApplyVisualTuning()
@@ -237,15 +242,38 @@ void ASquirrelTrainingPawn::MoveToward(const FVector& Target, float Speed, float
 		NewLocation.Z = FMath::FInterpConstantTo(CurrentLocation.Z, ClampDragLocation(Target).Z, DeltaSeconds, Speed);
 	}
 
-	SetActorLocation(ClampToTrainingArea(NewLocation), false);
+	SetActorLocation(ClampToTrainingArea(NewLocation), bIsDragging && bSweepDragMovement);
 
-	const float DeltaX = NewLocation.X - CurrentLocation.X;
-	const float DeltaY = NewLocation.Y - CurrentLocation.Y;
+	const FVector MovedLocation = GetActorLocation();
+	const float DeltaX = MovedLocation.X - CurrentLocation.X;
+	const float DeltaY = MovedLocation.Y - CurrentLocation.Y;
 	if (!FMath::IsNearlyZero(DeltaX, 0.1f) || !FMath::IsNearlyZero(DeltaY, 0.1f))
 	{
-		const float FacingYaw = DeltaX >= 0.0f ? 0.0f : 180.0f;
-		VisualRoot->SetRelativeRotation(FRotator(0.0f, FacingYaw, 0.0f));
+		FaceMovementDirection(DeltaX);
 	}
+}
+
+void ASquirrelTrainingPawn::FaceMovementDirection(float DeltaX)
+{
+	if (!FMath::IsNearlyZero(DeltaX, 0.1f))
+	{
+		TargetVisualYaw = DeltaX >= 0.0f ? 0.0f : 180.0f;
+	}
+}
+
+void ASquirrelTrainingPawn::UpdateVisualFacing(float DeltaSeconds)
+{
+	if (!VisualRoot)
+	{
+		return;
+	}
+
+	const FRotator CurrentRotation = VisualRoot->GetRelativeRotation();
+	const FRotator TargetRotation(0.0f, TargetVisualYaw, 0.0f);
+	const FRotator NewRotation = VisualTurnInterpSpeed > 0.0f
+		? FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, VisualTurnInterpSpeed)
+		: TargetRotation;
+	VisualRoot->SetRelativeRotation(NewRotation);
 }
 
 void ASquirrelTrainingPawn::ApplyGravity(float DeltaSeconds)
@@ -406,8 +434,7 @@ void ASquirrelTrainingPawn::BeginEatingFood(ASquirrelFoodActor* Food)
 	const float DeltaX = Food->GetActorLocation().X - GetActorLocation().X;
 	if (!FMath::IsNearlyZero(DeltaX, 0.1f))
 	{
-		const float FacingYaw = DeltaX >= 0.0f ? 0.0f : 180.0f;
-		VisualRoot->SetRelativeRotation(FRotator(0.0f, FacingYaw, 0.0f));
+		FaceMovementDirection(DeltaX);
 	}
 }
 
@@ -567,13 +594,12 @@ void ASquirrelTrainingPawn::DragToWorldLocation(const FVector& WorldLocation)
 	if (bSnapToMouseWhileDragging)
 	{
 		const FVector PreviousLocation = GetActorLocation();
-		SetActorLocation(DragTarget, false);
+		SetActorLocation(DragTarget, bSweepDragMovement);
 
-		const float DeltaX = DragTarget.X - PreviousLocation.X;
+		const float DeltaX = GetActorLocation().X - PreviousLocation.X;
 		if (!FMath::IsNearlyZero(DeltaX, 0.1f))
 		{
-			const float FacingYaw = DeltaX >= 0.0f ? 0.0f : 180.0f;
-			VisualRoot->SetRelativeRotation(FRotator(0.0f, FacingYaw, 0.0f));
+			FaceMovementDirection(DeltaX);
 		}
 	}
 }
