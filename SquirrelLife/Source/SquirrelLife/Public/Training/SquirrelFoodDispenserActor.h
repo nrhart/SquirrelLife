@@ -45,6 +45,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser")
 	bool bSpawnedFoodRespawns = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser", meta = (ClampMin = "1"))
+	int32 MaxActiveFoodCount = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser", meta = (ClampMin = "0", Units = "s"))
+	float DuplicateClickGuardSeconds = 0.15f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser", meta = (ClampMin = "0"))
 	float DispenseSpacing = 55.0f;
 
@@ -63,9 +69,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser")
 	FVector DispenserMeshScale = FVector(0.7f, 0.7f, 1.2f);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser")
-	FVector FoodSpawnPointRelativeLocation = FVector(95.0f, 0.0f, 40.0f);
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser|Widget")
 	FVector PurchaseWidgetRelativeLocation = FVector(0.0f, -12.0f, 150.0f);
 
@@ -76,6 +79,8 @@ protected:
 	FVector2D PurchaseWidgetDrawSize = FVector2D(220.0f, 90.0f);
 
 	int32 DispensedFoodCount = 0;
+	TArray<TWeakObjectPtr<ASquirrelFoodActor>> ActiveSpawnedFoods;
+	float LastDispenseTimeSeconds = -TNumericLimits<float>::Max();
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
@@ -84,6 +89,8 @@ protected:
 	ASquirrelTrainingPlayerController* GetTrainingPlayerController() const;
 	FVector GetNextFoodSpawnLocation() const;
 	FVector GetFoodDispenseImpulse() const;
+	void PruneInactiveFood();
+	int32 GetActiveFoodCount() const;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Dispenser")

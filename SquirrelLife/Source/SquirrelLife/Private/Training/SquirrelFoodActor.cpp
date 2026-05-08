@@ -61,14 +61,14 @@ void ASquirrelFoodActor::ApplyFoodTuning()
 		return;
 	}
 
-	FoodMesh->SetRelativeScale3D(FoodScale);
+	FoodMesh->SetRelativeScale3D(FoodMeshScale);
 	FoodMesh->SetLinearDamping(LinearDamping);
 	FoodMesh->SetAngularDamping(AngularDamping);
 }
 
 bool ASquirrelFoodActor::TryConsume(ASquirrelTrainingPawn* Squirrel)
 {
-	if (!Squirrel || IsHidden())
+	if (!Squirrel || (IsHidden() && !bIsHeldForEating))
 	{
 		return false;
 	}
@@ -79,11 +79,12 @@ bool ASquirrelFoodActor::TryConsume(ASquirrelTrainingPawn* Squirrel)
 
 void ASquirrelFoodActor::Consume(ASquirrelTrainingPawn* Squirrel)
 {
-	if (!Squirrel || IsHidden())
+	if (!Squirrel || (IsHidden() && !bIsHeldForEating))
 	{
 		return;
 	}
 
+	bIsHeldForEating = false;
 	FoodMesh->SetSimulatePhysics(false);
 	Squirrel->AddPower(PowerValue);
 	OnConsumed(Squirrel);
@@ -105,12 +106,18 @@ void ASquirrelFoodActor::Consume(ASquirrelTrainingPawn* Squirrel)
 
 void ASquirrelFoodActor::Respawn()
 {
+	bIsHeldForEating = false;
 	SetConsumed(false);
 	OnRespawned();
 }
 
 void ASquirrelFoodActor::SetConsumed(bool bConsumed)
 {
+	if (bConsumed)
+	{
+		bIsHeldForEating = false;
+	}
+
 	SetActorHiddenInGame(bConsumed);
 	SetActorEnableCollision(!bConsumed);
 	SetActorTickEnabled(!bConsumed);
@@ -118,6 +125,32 @@ void ASquirrelFoodActor::SetConsumed(bool bConsumed)
 	if (FoodMesh)
 	{
 		FoodMesh->SetSimulatePhysics(!bConsumed && bSimulatePhysicsOnSpawn);
+	}
+}
+
+void ASquirrelFoodActor::BeginHeldForEating()
+{
+	bIsHeldForEating = true;
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+
+	if (FoodMesh)
+	{
+		FoodMesh->SetSimulatePhysics(false);
+		FoodMesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
+		FoodMesh->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+	}
+}
+
+void ASquirrelFoodActor::RestoreFromEatingHold()
+{
+	bIsHeldForEating = false;
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+
+	if (FoodMesh)
+	{
+		FoodMesh->SetSimulatePhysics(bSimulatePhysicsOnSpawn);
 	}
 }
 

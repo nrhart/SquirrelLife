@@ -7,7 +7,9 @@
 #include "SquirrelTrainingPawn.generated.h"
 
 class UCapsuleComponent;
+class UFloatingPawnMovement;
 class USceneComponent;
+class USkeletalMeshComponent;
 class UStaticMeshComponent;
 class ASquirrelFoodActor;
 
@@ -32,6 +34,9 @@ protected:
 	TObjectPtr<UCapsuleComponent> Collision;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UFloatingPawnMovement> MovementComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USceneComponent> VisualRoot;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -39,6 +44,30 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UStaticMeshComponent> TailMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> SquirrelMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	bool bUseSkeletalSquirrelVisual = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	FVector SkeletalMeshRelativeLocation = FVector(0.0f, 0.0f, -58.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	bool bAutoAlignSkeletalMeshToCapsuleBottom = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals", meta = (EditCondition = "bAutoAlignSkeletalMeshToCapsuleBottom", Units = "cm"))
+	float SkeletalMeshGroundOffset = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	FRotator SkeletalMeshRelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	FVector SkeletalMeshRelativeScale = FVector(1.0f, 1.0f, 1.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	bool bHidePlaceholderMeshesWhenUsingSkeletalMesh = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0"))
 	float BaseMoveSpeed = 130.0f;
@@ -119,6 +148,9 @@ protected:
 	float FoodEatCooldown = 0.75f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Food", meta = (ClampMin = "0", Units = "s"))
+	float EatDuration = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Food", meta = (ClampMin = "0", Units = "s"))
 	float DropConsumeWindow = 2.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Training|Stats")
@@ -138,20 +170,31 @@ protected:
 	float DropConsumeTimeRemaining = 0.0f;
 	float FoodEatCooldownRemaining = 0.0f;
 	float RandomWanderIdleTimeRemaining = 0.0f;
+	float EatTimeRemaining = 0.0f;
 	FVector DragTarget = FVector::ZeroVector;
+	FVector PreviousActorLocation = FVector::ZeroVector;
+	float VisualMovementSpeed = 0.0f;
 	bool bWaitingToConsumeDroppedFood = false;
 	bool bHasRandomWanderTarget = false;
+	bool bIsEating = false;
+	bool bIsSeekingFood = false;
+	TObjectPtr<ASquirrelFoodActor> FoodBeingEaten;
 
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
 
+	void ApplyVisualTuning();
 	void ChooseNextRandomWanderTarget();
 	void MoveToward(const FVector& Target, float Speed, float DeltaSeconds);
 	void ApplyGravity(float DeltaSeconds);
 	bool UpdateAutoFoodSeeking(float DeltaSeconds);
 	void UpdateRandomWander(float DeltaSeconds);
 	void UpdateDropFoodConsumption(float DeltaSeconds);
+	void UpdateEating(float DeltaSeconds);
 	bool TryConsumeNearbyFood();
 	bool TryConsumeFood(ASquirrelFoodActor* Food);
+	void BeginEatingFood(ASquirrelFoodActor* Food);
+	void CompleteEatingFood();
 	ASquirrelFoodActor* FindNearestConsumableFood(float SearchRadius) const;
 	bool IsFoodCloseEnoughToEat(const ASquirrelFoodActor& Food) const;
 	bool FindGround(float TraceDistance, FHitResult& OutHit) const;
@@ -184,4 +227,25 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Training|Movement")
 	bool IsGrounded() const { return bIsGrounded; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Movement")
+	bool IsDragging() const { return bIsDragging; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Movement")
+	bool IsMoving() const { return VisualMovementSpeed > 5.0f; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Food")
+	bool IsEating() const { return bIsEating; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Food")
+	bool IsSeekingFood() const { return bIsSeekingFood; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Movement")
+	float GetVisualMovementSpeed() const { return VisualMovementSpeed; }
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Training|Animation")
+	void OnEatingStarted(ASquirrelFoodActor* Food);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Training|Animation")
+	void OnEatingFinished(ASquirrelFoodActor* Food);
 };

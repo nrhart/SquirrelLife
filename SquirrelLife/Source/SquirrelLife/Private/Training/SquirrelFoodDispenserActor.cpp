@@ -25,6 +25,7 @@ ASquirrelFoodDispenserActor::ASquirrelFoodDispenserActor()
 
 	FoodSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("FoodSpawnPoint"));
 	FoodSpawnPoint->SetupAttachment(RootComponent);
+	FoodSpawnPoint->SetRelativeLocation(FVector(95.0f, 0.0f, 40.0f));
 
 	PurchaseWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PurchaseWidget"));
 	PurchaseWidget->SetupAttachment(RootComponent);
@@ -69,11 +70,6 @@ void ASquirrelFoodDispenserActor::ApplyDispenserTuning()
 		DispenserMesh->SetRelativeScale3D(DispenserMeshScale);
 	}
 
-	if (FoodSpawnPoint)
-	{
-		FoodSpawnPoint->SetRelativeLocation(FoodSpawnPointRelativeLocation);
-	}
-
 	if (PurchaseWidget)
 	{
 		PurchaseWidget->SetRelativeLocation(PurchaseWidgetRelativeLocation);
@@ -87,6 +83,23 @@ bool ASquirrelFoodDispenserActor::TryDispenseFood()
 	ASquirrelTrainingPlayerController* TrainingController = GetTrainingPlayerController();
 	if (!TrainingController || !FoodClass)
 	{
+		return false;
+	}
+
+	const UWorld* World = GetWorld();
+	const float CurrentTimeSeconds = World ? World->GetTimeSeconds() : 0.0f;
+	if (CurrentTimeSeconds - LastDispenseTimeSeconds < DuplicateClickGuardSeconds)
+	{
+		return false;
+	}
+
+	PruneInactiveFood();
+	if (GetActiveFoodCount() >= MaxActiveFoodCount)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.25f, FColor::Yellow, TEXT("Eat the food first."));
+		}
 		return false;
 	}
 
@@ -108,6 +121,8 @@ bool ASquirrelFoodDispenserActor::TryDispenseFood()
 	{
 		SpawnedFood->SetRespawnAfterConsumed(bSpawnedFoodRespawns);
 		SpawnedFood->LaunchFromDispenser(GetFoodDispenseImpulse());
+		ActiveSpawnedFoods.Add(SpawnedFood);
+		LastDispenseTimeSeconds = CurrentTimeSeconds;
 		DispensedFoodCount++;
 	}
 
@@ -128,6 +143,29 @@ FText ASquirrelFoodDispenserActor::GetButtonText() const
 ASquirrelTrainingPlayerController* ASquirrelFoodDispenserActor::GetTrainingPlayerController() const
 {
 	return Cast<ASquirrelTrainingPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+}
+
+void ASquirrelFoodDispenserActor::PruneInactiveFood()
+{
+	ActiveSpawnedFoods.RemoveAllSwap(
+		[](const TWeakObjectPtr<ASquirrelFoodActor>& SpawnedFood)
+		{
+			return !SpawnedFood.IsValid();
+		});
+}
+
+int32 ASquirrelFoodDispenserActor::GetActiveFoodCount() const
+{
+	int32 ActiveFoodCount = 0;
+	for (const TWeakObjectPtr<ASquirrelFoodActor>& SpawnedFood : ActiveSpawnedFoods)
+	{
+		if (SpawnedFood.IsValid())
+		{
+			ActiveFoodCount++;
+		}
+	}
+
+	return ActiveFoodCount;
 }
 
 FVector ASquirrelFoodDispenserActor::GetNextFoodSpawnLocation() const

@@ -4,11 +4,13 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "Training/SquirrelFoodActor.h"
 
 ASquirrelTrainingPawn::ASquirrelTrainingPawn()
@@ -30,6 +32,13 @@ ASquirrelTrainingPawn::ASquirrelTrainingPawn()
 	Collision->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	Collision->SetGenerateOverlapEvents(true);
 
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+	MovementComponent->UpdatedComponent = Collision;
+	MovementComponent->MaxSpeed = 0.0f;
+	MovementComponent->Acceleration = 0.0f;
+	MovementComponent->Deceleration = 0.0f;
+	MovementComponent->TurningBoost = 0.0f;
+
 	VisualRoot = CreateDefaultSubobject<USceneComponent>(TEXT("VisualRoot"));
 	VisualRoot->SetupAttachment(RootComponent);
 
@@ -45,17 +54,33 @@ ASquirrelTrainingPawn::ASquirrelTrainingPawn()
 	TailMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 32.0f));
 	TailMesh->SetRelativeScale3D(FVector(0.42f, 0.25f, 0.92f));
 
+	SquirrelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SquirrelMesh"));
+	SquirrelMesh->SetupAttachment(VisualRoot);
+	SquirrelMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SquirrelMesh->SetVisibility(false);
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	if (SphereMesh.Succeeded())
 	{
 		BodyMesh->SetStaticMesh(SphereMesh.Object);
 		TailMesh->SetStaticMesh(SphereMesh.Object);
 	}
+
+	ApplyVisualTuning();
+}
+
+void ASquirrelTrainingPawn::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	ApplyVisualTuning();
 }
 
 void ASquirrelTrainingPawn::BeginPlay()
 {
 	Super::BeginPlay();
+	ApplyVisualTuning();
+	PreviousActorLocation = GetActorLocation();
 
 	if (bUseSpawnYAsTrainingPlane)
 	{
@@ -84,6 +109,12 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	if (DeltaSeconds > 0.0f)
+	{
+		VisualMovementSpeed = FVector::Dist(GetActorLocation(), PreviousActorLocation) / DeltaSeconds;
+		PreviousActorLocation = GetActorLocation();
+	}
+
 	if (bIsDragging)
 	{
 		if (!bSnapToMouseWhileDragging)
@@ -96,11 +127,20 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 		return;
 	}
 
+	if (bIsEating)
+	{
+		bIsSeekingFood = false;
+		UpdateEating(DeltaSeconds);
+		ApplyGravity(DeltaSeconds);
+		return;
+	}
+
 	if (FoodEatCooldownRemaining > 0.0f)
 	{
 		FoodEatCooldownRemaining = FMath::Max(FoodEatCooldownRemaining - DeltaSeconds, 0.0f);
 	}
 
+	bIsSeekingFood = false;
 	if (!UpdateAutoFoodSeeking(DeltaSeconds))
 	{
 		UpdateRandomWander(DeltaSeconds);
@@ -108,6 +148,43 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 
 	ApplyGravity(DeltaSeconds);
 	UpdateDropFoodConsumption(DeltaSeconds);
+}
+
+void ASquirrelTrainingPawn::ApplyVisualTuning()
+{
+	const bool bHasSkeletalMesh = SquirrelMesh && SquirrelMesh->GetSkeletalMeshAsset();
+	const bool bShowSkeletalMesh = bUseSkeletalSquirrelVisual && bHasSkeletalMesh;
+
+	if (SquirrelMesh)
+	{
+		FVector MeshRelativeLocation = SkeletalMeshRelativeLocation;
+		if (bAutoAlignSkeletalMeshToCapsuleBottom && Collision && SquirrelMesh->GetSkeletalMeshAsset())
+		{
+			const FBoxSphereBounds LocalBounds = SquirrelMesh->GetLocalBounds();
+			const FVector LocalMin = LocalBounds.Origin - LocalBounds.BoxExtent;
+			const float MeshBottomZ = LocalMin.Z * SkeletalMeshRelativeScale.Z;
+			MeshRelativeLocation.Z = -Collision->GetUnscaledCapsuleHalfHeight() - MeshBottomZ + SkeletalMeshGroundOffset;
+		}
+
+		SquirrelMesh->SetRelativeLocation(MeshRelativeLocation);
+		SquirrelMesh->SetRelativeRotation(SkeletalMeshRelativeRotation);
+		SquirrelMesh->SetRelativeScale3D(SkeletalMeshRelativeScale);
+		SquirrelMesh->SetVisibility(bShowSkeletalMesh);
+		SquirrelMesh->SetHiddenInGame(!bShowSkeletalMesh);
+	}
+
+	const bool bShowPlaceholder = !bShowSkeletalMesh || !bHidePlaceholderMeshesWhenUsingSkeletalMesh;
+	if (BodyMesh)
+	{
+		BodyMesh->SetVisibility(bShowPlaceholder);
+		BodyMesh->SetHiddenInGame(!bShowPlaceholder);
+	}
+
+	if (TailMesh)
+	{
+		TailMesh->SetVisibility(bShowPlaceholder);
+		TailMesh->SetHiddenInGame(!bShowPlaceholder);
+	}
 }
 
 void ASquirrelTrainingPawn::ChooseNextRandomWanderTarget()
@@ -209,6 +286,7 @@ bool ASquirrelTrainingPawn::UpdateAutoFoodSeeking(float DeltaSeconds)
 		return false;
 	}
 
+	bIsSeekingFood = true;
 	if (IsFoodCloseEnoughToEat(*Food))
 	{
 		TryConsumeFood(Food);
@@ -264,10 +342,21 @@ void ASquirrelTrainingPawn::UpdateDropFoodConsumption(float DeltaSeconds)
 	}
 }
 
+void ASquirrelTrainingPawn::UpdateEating(float DeltaSeconds)
+{
+	EatTimeRemaining -= DeltaSeconds;
+	if (EatTimeRemaining > 0.0f)
+	{
+		return;
+	}
+
+	CompleteEatingFood();
+}
+
 bool ASquirrelTrainingPawn::TryConsumeNearbyFood()
 {
-	ASquirrelFoodActor* Food = FindNearestConsumableFood(FoodConsumeRadius);
-	if (!Food)
+	ASquirrelFoodActor* Food = FindNearestConsumableFood(FoodSeekRadius);
+	if (!Food || !IsFoodCloseEnoughToEat(*Food))
 	{
 		return false;
 	}
@@ -277,18 +366,57 @@ bool ASquirrelTrainingPawn::TryConsumeNearbyFood()
 
 bool ASquirrelTrainingPawn::TryConsumeFood(ASquirrelFoodActor* Food)
 {
-	if (!Food || FoodEatCooldownRemaining > 0.0f)
+	if (!Food || FoodEatCooldownRemaining > 0.0f || bIsEating)
 	{
 		return false;
 	}
 
-	if (!Food->TryConsume(this))
-	{
-		return false;
-	}
-
-	FoodEatCooldownRemaining = FoodEatCooldown;
+	BeginEatingFood(Food);
 	return true;
+}
+
+void ASquirrelTrainingPawn::BeginEatingFood(ASquirrelFoodActor* Food)
+{
+	if (!Food)
+	{
+		return;
+	}
+
+	bIsEating = true;
+	bIsSeekingFood = false;
+	bHasRandomWanderTarget = false;
+	FoodBeingEaten = Food;
+	EatTimeRemaining = EatDuration;
+	Food->BeginHeldForEating();
+	OnEatingStarted(Food);
+
+	const float DeltaX = Food->GetActorLocation().X - GetActorLocation().X;
+	if (!FMath::IsNearlyZero(DeltaX, 0.1f))
+	{
+		const float FacingYaw = DeltaX >= 0.0f ? 0.0f : 180.0f;
+		VisualRoot->SetRelativeRotation(FRotator(0.0f, FacingYaw, 0.0f));
+	}
+}
+
+void ASquirrelTrainingPawn::CompleteEatingFood()
+{
+	ASquirrelFoodActor* Food = FoodBeingEaten.Get();
+	bIsEating = false;
+	FoodBeingEaten = nullptr;
+	EatTimeRemaining = 0.0f;
+
+	if (Food)
+	{
+		OnEatingFinished(Food);
+		if (Food->TryConsume(this))
+		{
+			FoodEatCooldownRemaining = FoodEatCooldown;
+		}
+	}
+	else
+	{
+		OnEatingFinished(nullptr);
+	}
 }
 
 ASquirrelFoodActor* ASquirrelTrainingPawn::FindNearestConsumableFood(float SearchRadius) const
@@ -325,8 +453,12 @@ ASquirrelFoodActor* ASquirrelTrainingPawn::FindNearestConsumableFood(float Searc
 
 bool ASquirrelTrainingPawn::IsFoodCloseEnoughToEat(const ASquirrelFoodActor& Food) const
 {
-	const float AllowedDistance = FoodConsumeRadius + Food.GetConsumeRadius();
-	return FVector::DistSquared(GetActorLocation(), Food.GetActorLocation()) <= FMath::Square(AllowedDistance);
+	const FVector SquirrelLocation = GetActorLocation();
+	const FVector FoodLocation = Food.GetActorLocation();
+	const float GroundPlaneDistanceSquared = FVector2D::DistSquared(
+		FVector2D(SquirrelLocation.X, SquirrelLocation.Y),
+		FVector2D(FoodLocation.X, FoodLocation.Y));
+	return GroundPlaneDistanceSquared <= FMath::Square(FoodConsumeRadius);
 }
 
 bool ASquirrelTrainingPawn::FindGround(float TraceDistance, FHitResult& OutHit) const
@@ -389,7 +521,17 @@ float ASquirrelTrainingPawn::GetCurrentMoveSpeed() const
 
 void ASquirrelTrainingPawn::BeginDrag()
 {
+	if (FoodBeingEaten)
+	{
+		FoodBeingEaten->RestoreFromEatingHold();
+		OnEatingFinished(FoodBeingEaten);
+	}
+
 	bIsDragging = true;
+	bIsEating = false;
+	bIsSeekingFood = false;
+	FoodBeingEaten = nullptr;
+	EatTimeRemaining = 0.0f;
 	bWaitingToConsumeDroppedFood = false;
 	bHasRandomWanderTarget = false;
 	DropConsumeTimeRemaining = 0.0f;

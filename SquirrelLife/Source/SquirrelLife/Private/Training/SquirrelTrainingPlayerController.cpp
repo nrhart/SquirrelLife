@@ -62,6 +62,8 @@ void ASquirrelTrainingPlayerController::PlayerTick(float DeltaTime)
 
 void ASquirrelTrainingPlayerController::OnPrimaryPressed()
 {
+	bWasPrimaryMouseDown = true;
+
 	float ScreenX = 0.0f;
 	float ScreenY = 0.0f;
 	if (GetMousePosition(ScreenX, ScreenY))
@@ -74,6 +76,7 @@ void ASquirrelTrainingPlayerController::OnPrimaryPressed()
 void ASquirrelTrainingPlayerController::OnPrimaryReleased()
 {
 	FinishDrag();
+	bWasPrimaryMouseDown = false;
 }
 
 void ASquirrelTrainingPlayerController::OnTouchPressed(const ETouchIndex::Type FingerIndex, const FVector Location)
