@@ -2,6 +2,7 @@
 
 #include "Training/SquirrelTrainingPawn.h"
 
+#include "Audio/SquirrelAudioManager.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -81,6 +82,9 @@ void ASquirrelTrainingPawn::BeginPlay()
 	Super::BeginPlay();
 	ApplyVisualTuning();
 	PreviousActorLocation = GetActorLocation();
+	EnergyLevel = FMath::Clamp(StartingEnergyLevel, 0, MaxEnergyLevel);
+	EnergyProgressPoints = 0;
+	OnEnergyChanged.Broadcast(EnergyLevel, EnergyProgressPoints, MaxEnergyLevel);
 
 	if (bUseSpawnYAsTrainingPlane)
 	{
@@ -138,6 +142,14 @@ void ASquirrelTrainingPawn::Tick(float DeltaSeconds)
 	if (FoodEatCooldownRemaining > 0.0f)
 	{
 		FoodEatCooldownRemaining = FMath::Max(FoodEatCooldownRemaining - DeltaSeconds, 0.0f);
+	}
+
+	if (PostEatPatrolCooldownRemaining > 0.0f)
+	{
+		PostEatPatrolCooldownRemaining = FMath::Max(PostEatPatrolCooldownRemaining - DeltaSeconds, 0.0f);
+		ApplyGravity(DeltaSeconds);
+		UpdateDropFoodConsumption(DeltaSeconds);
+		return;
 	}
 
 	bIsSeekingFood = false;
@@ -388,6 +400,7 @@ void ASquirrelTrainingPawn::BeginEatingFood(ASquirrelFoodActor* Food)
 	FoodBeingEaten = Food;
 	EatTimeRemaining = EatDuration;
 	Food->BeginHeldForEating();
+	ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::EatingStarted, Food->GetActorLocation(), this);
 	OnEatingStarted(Food);
 
 	const float DeltaX = Food->GetActorLocation().X - GetActorLocation().X;
@@ -411,6 +424,10 @@ void ASquirrelTrainingPawn::CompleteEatingFood()
 		if (Food->TryConsume(this))
 		{
 			FoodEatCooldownRemaining = FoodEatCooldown;
+			PostEatPatrolCooldownRemaining = PostEatPatrolCooldown;
+			bHasRandomWanderTarget = false;
+			RandomWanderIdleTimeRemaining = PostEatPatrolCooldown;
+			ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::EatingFinished, GetActorLocation(), this);
 		}
 	}
 	else
@@ -521,21 +538,21 @@ float ASquirrelTrainingPawn::GetCurrentMoveSpeed() const
 
 void ASquirrelTrainingPawn::BeginDrag()
 {
-	if (FoodBeingEaten)
+	if (bIsEating)
 	{
-		FoodBeingEaten->RestoreFromEatingHold();
-		OnEatingFinished(FoodBeingEaten);
+		return;
 	}
 
 	bIsDragging = true;
-	bIsEating = false;
 	bIsSeekingFood = false;
 	FoodBeingEaten = nullptr;
 	EatTimeRemaining = 0.0f;
+	PostEatPatrolCooldownRemaining = 0.0f;
 	bWaitingToConsumeDroppedFood = false;
 	bHasRandomWanderTarget = false;
 	DropConsumeTimeRemaining = 0.0f;
 	DragTarget = GetActorLocation();
+	ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::DragStarted, GetActorLocation(), this);
 }
 
 void ASquirrelTrainingPawn::DragToWorldLocation(const FVector& WorldLocation)
@@ -575,6 +592,7 @@ void ASquirrelTrainingPawn::EndDrag()
 	PatrolDirection = FMath::IsNearlyZero(PatrolDirection) ? 1.0f : PatrolDirection;
 	bHasRandomWanderTarget = false;
 	RandomWanderIdleTimeRemaining = FMath::FRandRange(RandomWanderMinIdleTime, RandomWanderMaxIdleTime);
+	ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::DragReleased, GetActorLocation(), this);
 }
 
 void ASquirrelTrainingPawn::AddPower(int32 Amount)
@@ -595,4 +613,71 @@ void ASquirrelTrainingPawn::AddPower(int32 Amount)
 			FColor::Green,
 			FString::Printf(TEXT("Power +%d  |  Total Power: %d  |  Speed: %.0f"), Amount, PowerLevel, GetCurrentMoveSpeed()));
 	}
+}
+
+void ASquirrelTrainingPawn::AddEnergyProgress(int32 Amount)
+{
+	if (Amount <= 0 || EnergyLevel >= MaxEnergyLevel)
+	{
+		return;
+	}
+
+	const int32 PreviousEnergyLevel = EnergyLevel;
+	EnergyProgressPoints += Amount;
+
+	while (EnergyProgressPoints >= EnergyPointsPerLevel && EnergyLevel < MaxEnergyLevel)
+	{
+		EnergyProgressPoints -= EnergyPointsPerLevel;
+		EnergyLevel++;
+	}
+
+	if (EnergyLevel >= MaxEnergyLevel)
+	{
+		EnergyLevel = MaxEnergyLevel;
+		EnergyProgressPoints = 0;
+	}
+
+	OnEnergyChanged.Broadcast(EnergyLevel, EnergyProgressPoints, MaxEnergyLevel);
+
+	if (EnergyLevel > PreviousEnergyLevel)
+	{
+		ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::EnergyLevelUp, GetActorLocation(), this);
+	}
+}
+
+void ASquirrelTrainingPawn::AddEnergyFromFood(int32 FoodAmount)
+{
+	if (FoodAmount <= 0)
+	{
+		return;
+	}
+
+	AddEnergyProgress(FoodAmount * EnergyPointsPerFood);
+}
+
+bool ASquirrelTrainingPawn::TrySpendEnergy(int32 Amount)
+{
+	if (Amount <= 0)
+	{
+		return true;
+	}
+
+	if (EnergyLevel < Amount)
+	{
+		return false;
+	}
+
+	EnergyLevel -= Amount;
+	OnEnergyChanged.Broadcast(EnergyLevel, EnergyProgressPoints, MaxEnergyLevel);
+	return true;
+}
+
+float ASquirrelTrainingPawn::GetEnergyProgressPercent() const
+{
+	return EnergyPointsPerLevel > 0 ? static_cast<float>(EnergyProgressPoints) / static_cast<float>(EnergyPointsPerLevel) : 0.0f;
+}
+
+float ASquirrelTrainingPawn::GetEnergyLevelPercent() const
+{
+	return MaxEnergyLevel > 0 ? static_cast<float>(EnergyLevel) / static_cast<float>(MaxEnergyLevel) : 0.0f;
 }

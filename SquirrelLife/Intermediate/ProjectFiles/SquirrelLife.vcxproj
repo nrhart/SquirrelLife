@@ -257,6 +257,9 @@
     <None Include="..\..\Config\DefaultInput.ini"/>
     <None Include="..\..\Source\SquirrelLife.Target.cs"/>
     <None Include="..\..\Source\SquirrelLifeEditor.Target.cs"/>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Audio\SquirrelAudioManager.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\SquirrelLife.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -264,9 +267,6 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodDispenserActor.cpp">
-      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodDispenserWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingCameraActor.cpp">
@@ -281,14 +281,22 @@
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingPlayerController.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelFoodDispenserWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelTrainingHudWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Audio\SquirrelAudioManager.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\SquirrelLife.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodActor.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserActor.h"/>
-    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserWidget.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingCameraActor.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingGameMode.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPawn.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPlayerController.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelFoodDispenserWidget.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelTrainingHudWidget.h"/>
     <None Include="..\..\Source\SquirrelLife\SquirrelLife.Build.cs"/>
     <None Include="..\..\SquirrelLife.uproject"/>
   </ItemGroup>

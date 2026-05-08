@@ -35,6 +35,12 @@
     <Filter Include="Source\SquirrelLife\Private">
       <UniqueIdentifier>{07707280-718D-3C3B-B09C-CFD7523E5E1C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\SquirrelLife\Private\Audio">
+      <UniqueIdentifier>{59CB8EE2-B4FD-3C8C-8B65-8BA25A273D58}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Audio\SquirrelAudioManager.cpp">
+      <Filter>Source\SquirrelLife\Private\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\SquirrelLife.cpp">
       <Filter>Source\SquirrelLife\Private</Filter>
     </ClCompile>
@@ -45,9 +51,6 @@
       <Filter>Source\SquirrelLife\Private\Training</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodDispenserActor.cpp">
-      <Filter>Source\SquirrelLife\Private\Training</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelFoodDispenserWidget.cpp">
       <Filter>Source\SquirrelLife\Private\Training</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingCameraActor.cpp">
@@ -62,9 +65,24 @@
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Training\SquirrelTrainingPlayerController.cpp">
       <Filter>Source\SquirrelLife\Private\Training</Filter>
     </ClCompile>
+    <Filter Include="Source\SquirrelLife\Private\UI">
+      <UniqueIdentifier>{4C83D8D3-9D69-30A8-A15F-D02765F47333}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelFoodDispenserWidget.cpp">
+      <Filter>Source\SquirrelLife\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelTrainingHudWidget.cpp">
+      <Filter>Source\SquirrelLife\Private\UI</Filter>
+    </ClCompile>
     <Filter Include="Source\SquirrelLife\Public">
       <UniqueIdentifier>{E3AD57C2-DEA9-3413-B884-CEB4C5127C01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\SquirrelLife\Public\Audio">
+      <UniqueIdentifier>{B5F23EAC-E40C-397E-989F-549CBB6C7F7B}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Audio\SquirrelAudioManager.h">
+      <Filter>Source\SquirrelLife\Public\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\SquirrelLife.h">
       <Filter>Source\SquirrelLife\Public</Filter>
     </ClInclude>
@@ -75,9 +93,6 @@
       <Filter>Source\SquirrelLife\Public\Training</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserActor.h">
-      <Filter>Source\SquirrelLife\Public\Training</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserWidget.h">
       <Filter>Source\SquirrelLife\Public\Training</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingCameraActor.h">
@@ -91,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPlayerController.h">
       <Filter>Source\SquirrelLife\Public\Training</Filter>
+    </ClInclude>
+    <Filter Include="Source\SquirrelLife\Public\UI">
+      <UniqueIdentifier>{4DFAAABC-466A-32E6-8FB7-954C98A52C95}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelFoodDispenserWidget.h">
+      <Filter>Source\SquirrelLife\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelTrainingHudWidget.h">
+      <Filter>Source\SquirrelLife\Public\UI</Filter>
     </ClInclude>
     <None Include="..\..\Source\SquirrelLife\SquirrelLife.Build.cs">
       <Filter>Source\SquirrelLife</Filter>

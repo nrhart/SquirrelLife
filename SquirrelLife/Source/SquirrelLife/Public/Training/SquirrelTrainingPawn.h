@@ -14,6 +14,7 @@ class UStaticMeshComponent;
 class ASquirrelFoodActor;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSquirrelPowerChangedSignature, int32, NewPower, float, NewMoveSpeed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FSquirrelEnergyChangedSignature, int32, NewEnergyLevel, int32, NewEnergyProgressPoints, int32, NewMaxEnergyLevel);
 
 /**
  * Early Duck Life-inspired squirrel pawn.
@@ -148,16 +149,40 @@ protected:
 	float FoodEatCooldown = 0.75f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Food", meta = (ClampMin = "0", Units = "s"))
+	float PostEatPatrolCooldown = 2.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Food", meta = (ClampMin = "0", Units = "s"))
 	float EatDuration = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Food", meta = (ClampMin = "0", Units = "s"))
 	float DropConsumeWindow = 2.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Stats", meta = (ClampMin = "0"))
+	int32 StartingEnergyLevel = 3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Stats", meta = (ClampMin = "1"))
+	int32 MaxEnergyLevel = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Stats", meta = (ClampMin = "1"))
+	int32 EnergyPointsPerLevel = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Stats", meta = (ClampMin = "0"))
+	int32 EnergyPointsPerFood = 3;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Training|Stats")
+	int32 EnergyLevel = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Training|Stats")
+	int32 EnergyProgressPoints = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Training|Stats")
 	int32 PowerLevel = 0;
 
 	UPROPERTY(BlueprintAssignable, Category = "Training|Stats")
 	FSquirrelPowerChangedSignature OnPowerChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Training|Stats")
+	FSquirrelEnergyChangedSignature OnEnergyChanged;
 
 	bool bIsDragging = false;
 	bool bIsGrounded = false;
@@ -169,6 +194,7 @@ protected:
 	float PatrolDirection = 1.0f;
 	float DropConsumeTimeRemaining = 0.0f;
 	float FoodEatCooldownRemaining = 0.0f;
+	float PostEatPatrolCooldownRemaining = 0.0f;
 	float RandomWanderIdleTimeRemaining = 0.0f;
 	float EatTimeRemaining = 0.0f;
 	FVector DragTarget = FVector::ZeroVector;
@@ -216,8 +242,44 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Training|Stats")
 	void AddPower(int32 Amount);
 
+	UFUNCTION(BlueprintCallable, Category = "Training|Stats")
+	void AddEnergyProgress(int32 Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Training|Stats")
+	void AddEnergy(int32 Amount) { AddEnergyProgress(Amount); }
+
+	UFUNCTION(BlueprintCallable, Category = "Training|Stats")
+	void AddEnergyFromFood(int32 FoodAmount = 1);
+
+	UFUNCTION(BlueprintCallable, Category = "Training|Stats")
+	bool TrySpendEnergy(int32 Amount);
+
 	UFUNCTION(BlueprintPure, Category = "Training|Stats")
 	int32 GetPowerLevel() const { return PowerLevel; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetEnergyLevel() const { return EnergyLevel; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetEnergy() const { return EnergyLevel; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetMaxEnergyLevel() const { return MaxEnergyLevel; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetMaxEnergy() const { return MaxEnergyLevel; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetEnergyProgressPoints() const { return EnergyProgressPoints; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetEnergyPointsPerLevel() const { return EnergyPointsPerLevel; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	float GetEnergyProgressPercent() const;
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	float GetEnergyLevelPercent() const;
 
 	UFUNCTION(BlueprintPure, Category = "Training|Stats")
 	float GetMoveSpeed() const { return GetCurrentMoveSpeed(); }

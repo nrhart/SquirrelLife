@@ -9,6 +9,7 @@
 #include "Training/SquirrelFoodDispenserActor.h"
 #include "Training/SquirrelTrainingCameraActor.h"
 #include "Training/SquirrelTrainingPawn.h"
+#include "UI/SquirrelTrainingHudWidget.h"
 
 ASquirrelTrainingPlayerController::ASquirrelTrainingPlayerController()
 {
@@ -18,6 +19,7 @@ ASquirrelTrainingPlayerController::ASquirrelTrainingPlayerController()
 	bEnableMouseOverEvents = true;
 	bEnableTouchEvents = true;
 	DefaultMouseCursor = EMouseCursor::GrabHand;
+	TrainingHudWidgetClass = USquirrelTrainingHudWidget::StaticClass();
 }
 
 void ASquirrelTrainingPlayerController::BeginPlay()
@@ -32,6 +34,7 @@ void ASquirrelTrainingPlayerController::BeginPlay()
 	Money = StartingMoney;
 	OnMoneyChanged.Broadcast(Money);
 	SetupTrainingCamera();
+	SetupTrainingHud();
 }
 
 void ASquirrelTrainingPlayerController::SetupInputComponent()
@@ -58,6 +61,11 @@ void ASquirrelTrainingPlayerController::PlayerTick(float DeltaTime)
 	UpdatePolledMouseDrag();
 	UpdateEdgeScrollCamera(DeltaTime);
 	UpdateDraggedSquirrel();
+
+	if (bShowTrainingHud && !TrainingHudWidget)
+	{
+		SetupTrainingHud();
+	}
 }
 
 void ASquirrelTrainingPlayerController::OnPrimaryPressed()
@@ -124,17 +132,9 @@ bool ASquirrelTrainingPlayerController::TryStartDragAtScreenPosition(float Scree
 		Squirrel = Cast<ASquirrelTrainingPawn>(Hit.GetActor());
 	}
 
-	if (!Squirrel)
+	if (!Squirrel || Squirrel->IsEating())
 	{
-		Squirrel = FindSquirrelNearScreenPosition(ScreenX, ScreenY);
-		if (!Squirrel)
-		{
-			Squirrel = GetFallbackSquirrel();
-			if (!Squirrel)
-			{
-				return false;
-			}
-		}
+		return false;
 	}
 
 	DraggedSquirrel = Squirrel;
@@ -154,69 +154,6 @@ void ASquirrelTrainingPlayerController::StartScreenDrag(ASquirrelTrainingPawn& S
 
 	DragWorldUnitsPerScreenPixel = CalculateDragWorldUnitsPerScreenPixel(DragStartWorldLocation);
 	Squirrel.BeginDrag();
-}
-
-ASquirrelTrainingPawn* ASquirrelTrainingPlayerController::FindSquirrelNearScreenPosition(float ScreenX, float ScreenY) const
-{
-	const UWorld* World = GetWorld();
-	if (!World || DragPickRadiusScreenPixels <= 0.0f)
-	{
-		return nullptr;
-	}
-
-	const FVector2D TargetScreenPosition(ScreenX, ScreenY);
-	const float MaxDistanceSquared = FMath::Square(DragPickRadiusScreenPixels);
-	float BestDistanceSquared = MaxDistanceSquared;
-	ASquirrelTrainingPawn* BestSquirrel = nullptr;
-
-	for (TActorIterator<ASquirrelTrainingPawn> It(World); It; ++It)
-	{
-		ASquirrelTrainingPawn* Squirrel = *It;
-		if (!Squirrel)
-		{
-			continue;
-		}
-
-		FVector Origin = FVector::ZeroVector;
-		FVector Extent = FVector::ZeroVector;
-		Squirrel->GetActorBounds(false, Origin, Extent);
-
-		FVector2D SquirrelScreenPosition = FVector2D::ZeroVector;
-		if (!ProjectWorldLocationToScreen(Origin, SquirrelScreenPosition, false))
-		{
-			continue;
-		}
-
-		const float DistanceSquared = FVector2D::DistSquared(TargetScreenPosition, SquirrelScreenPosition);
-		if (DistanceSquared <= BestDistanceSquared)
-		{
-			BestDistanceSquared = DistanceSquared;
-			BestSquirrel = Squirrel;
-		}
-	}
-
-	return BestSquirrel;
-}
-
-ASquirrelTrainingPawn* ASquirrelTrainingPlayerController::GetFallbackSquirrel() const
-{
-	if (ASquirrelTrainingPawn* PossessedSquirrel = Cast<ASquirrelTrainingPawn>(GetPawn()))
-	{
-		return PossessedSquirrel;
-	}
-
-	const UWorld* World = GetWorld();
-	if (!World)
-	{
-		return nullptr;
-	}
-
-	for (TActorIterator<ASquirrelTrainingPawn> It(World); It; ++It)
-	{
-		return *It;
-	}
-
-	return nullptr;
 }
 
 float ASquirrelTrainingPlayerController::CalculateDragWorldUnitsPerScreenPixel(const FVector& DraggedWorldLocation) const
@@ -295,6 +232,39 @@ void ASquirrelTrainingPlayerController::SetupTrainingCamera()
 	if (TrainingCamera)
 	{
 		SetViewTarget(TrainingCamera);
+	}
+}
+
+void ASquirrelTrainingPlayerController::SetupTrainingHud()
+{
+	if (!bShowTrainingHud || !IsLocalController() || TrainingHudWidget)
+	{
+		return;
+	}
+
+	if (!TrainingHudWidgetClass)
+	{
+		if (bDebugTrainingHud && !bReportedTrainingHudMissingClass && GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Red, TEXT("Training HUD class is not set on the player controller."));
+		}
+
+		bReportedTrainingHudMissingClass = true;
+		return;
+	}
+
+	TrainingHudWidget = CreateWidget<USquirrelTrainingHudWidget>(this, TrainingHudWidgetClass);
+	if (TrainingHudWidget)
+	{
+		TrainingHudWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
+		TrainingHudWidget->AddToPlayerScreen(10);
+
+		if (bDebugTrainingHud && !bReportedTrainingHudCreated && GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("Training HUD created."));
+		}
+
+		bReportedTrainingHudCreated = true;
 	}
 }
 

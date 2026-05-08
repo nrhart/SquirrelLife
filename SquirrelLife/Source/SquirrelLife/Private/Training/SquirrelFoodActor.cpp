@@ -87,6 +87,7 @@ void ASquirrelFoodActor::Consume(ASquirrelTrainingPawn* Squirrel)
 	bIsHeldForEating = false;
 	FoodMesh->SetSimulatePhysics(false);
 	Squirrel->AddPower(PowerValue);
+	Squirrel->AddEnergyFromFood(PowerValue);
 	OnConsumed(Squirrel);
 
 	if (bRespawnAfterConsumed)

@@ -2,12 +2,14 @@
 	"RemapUnityFiles": 
 	{
 		"Module.SquirrelLife.gen.cpp.obj": [
+			"SquirrelAudioManager.gen.cpp.obj",
 			"SquirrelFoodActor.gen.cpp.obj",
 			"SquirrelFoodDispenserActor.gen.cpp.obj",
 			"SquirrelFoodDispenserWidget.gen.cpp.obj",
 			"SquirrelLife.init.gen.cpp.obj",
 			"SquirrelTrainingCameraActor.gen.cpp.obj",
 			"SquirrelTrainingGameMode.gen.cpp.obj",
+			"SquirrelTrainingHudWidget.gen.cpp.obj",
 			"SquirrelTrainingPawn.gen.cpp.obj",
 			"SquirrelTrainingPlayerController.gen.cpp.obj"
 		]

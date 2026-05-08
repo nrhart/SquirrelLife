@@ -70,12 +70,6 @@ protected:
 	FVector DispenserMeshScale = FVector(0.7f, 0.7f, 1.2f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser|Widget")
-	FVector PurchaseWidgetRelativeLocation = FVector(0.0f, -12.0f, 150.0f);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser|Widget")
-	FRotator PurchaseWidgetRelativeRotation = FRotator(0.0f, 180.0f, 0.0f);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dispenser|Widget")
 	FVector2D PurchaseWidgetDrawSize = FVector2D(220.0f, 90.0f);
 
 	int32 DispensedFoodCount = 0;

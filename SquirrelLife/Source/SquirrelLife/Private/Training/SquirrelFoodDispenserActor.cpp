@@ -2,6 +2,7 @@
 
 #include "Training/SquirrelFoodDispenserActor.h"
 
+#include "Audio/SquirrelAudioManager.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
@@ -10,8 +11,8 @@
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "Training/SquirrelFoodActor.h"
-#include "Training/SquirrelFoodDispenserWidget.h"
 #include "Training/SquirrelTrainingPlayerController.h"
+#include "UI/SquirrelFoodDispenserWidget.h"
 
 ASquirrelFoodDispenserActor::ASquirrelFoodDispenserActor()
 {
@@ -29,6 +30,8 @@ ASquirrelFoodDispenserActor::ASquirrelFoodDispenserActor()
 
 	PurchaseWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PurchaseWidget"));
 	PurchaseWidget->SetupAttachment(RootComponent);
+	PurchaseWidget->SetRelativeLocation(FVector(0.0f, -12.0f, 150.0f));
+	PurchaseWidget->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
 	PurchaseWidget->SetWidgetSpace(EWidgetSpace::World);
 	PurchaseWidget->SetWidgetClass(USquirrelFoodDispenserWidget::StaticClass());
 	PurchaseWidget->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
@@ -72,8 +75,6 @@ void ASquirrelFoodDispenserActor::ApplyDispenserTuning()
 
 	if (PurchaseWidget)
 	{
-		PurchaseWidget->SetRelativeLocation(PurchaseWidgetRelativeLocation);
-		PurchaseWidget->SetRelativeRotation(PurchaseWidgetRelativeRotation);
 		PurchaseWidget->SetDrawSize(PurchaseWidgetDrawSize);
 	}
 }
@@ -100,6 +101,7 @@ bool ASquirrelFoodDispenserActor::TryDispenseFood()
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 1.25f, FColor::Yellow, TEXT("Eat the food first."));
 		}
+		ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::FoodLimitReached, GetActorLocation(), this);
 		return false;
 	}
 
@@ -109,6 +111,7 @@ bool ASquirrelFoodDispenserActor::TryDispenseFood()
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 1.25f, FColor::Red, TEXT("Not enough money for food."));
 		}
+		ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::NotEnoughMoney, GetActorLocation(), this);
 		return false;
 	}
 
@@ -124,6 +127,7 @@ bool ASquirrelFoodDispenserActor::TryDispenseFood()
 		ActiveSpawnedFoods.Add(SpawnedFood);
 		LastDispenseTimeSeconds = CurrentTimeSeconds;
 		DispensedFoodCount++;
+		ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::DispenseFood, SpawnedFood->GetActorLocation(), this);
 	}
 
 	return SpawnedFood != nullptr;
