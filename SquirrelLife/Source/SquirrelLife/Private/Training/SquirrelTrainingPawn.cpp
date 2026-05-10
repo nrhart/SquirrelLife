@@ -2,6 +2,7 @@
 
 #include "Training/SquirrelTrainingPawn.h"
 
+#include "Animation/AnimInstance.h"
 #include "Audio/SquirrelAudioManager.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
@@ -12,7 +13,11 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Progress/SquirrelGameInstance.h"
+#include "Progress/SquirrelProgressTuningData.h"
+#include "Progress/SquirrelTuningComponent.h"
 #include "Training/SquirrelFoodActor.h"
+#include "Training/SquirrelTrainingGameMode.h"
 
 ASquirrelTrainingPawn::ASquirrelTrainingPawn()
 {
@@ -60,6 +65,8 @@ ASquirrelTrainingPawn::ASquirrelTrainingPawn()
 	SquirrelMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SquirrelMesh->SetVisibility(false);
 
+	TuningComponent = CreateDefaultSubobject<USquirrelTuningComponent>(TEXT("TuningComponent"));
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	if (SphereMesh.Succeeded())
 	{
@@ -83,8 +90,18 @@ void ASquirrelTrainingPawn::BeginPlay()
 	ApplyVisualTuning();
 	TargetVisualYaw = VisualRoot ? VisualRoot->GetRelativeRotation().Yaw : 0.0f;
 	PreviousActorLocation = GetActorLocation();
-	EnergyLevel = FMath::Clamp(StartingEnergyLevel, 0, MaxEnergyLevel);
-	EnergyProgressPoints = 0;
+	SpawnLocation = GetActorLocation();
+	LastSafeGroundedLocation = SpawnLocation;
+	if (GetProgressGameInstance())
+	{
+		SyncEnergyFromProgress();
+	}
+	else
+	{
+		ApplyLocalProgressTuning();
+		EnergyLevel = FMath::Clamp(StartingEnergyLevel, 0, MaxEnergyLevel);
+		EnergyProgressPoints = 0;
+	}
 	OnEnergyChanged.Broadcast(EnergyLevel, EnergyProgressPoints, MaxEnergyLevel);
 
 	if (bUseSpawnYAsTrainingPlane)
@@ -186,6 +203,11 @@ void ASquirrelTrainingPawn::ApplyVisualTuning()
 		SquirrelMesh->SetRelativeLocation(MeshRelativeLocation);
 		SquirrelMesh->SetRelativeRotation(SkeletalMeshRelativeRotation);
 		SquirrelMesh->SetRelativeScale3D(SkeletalMeshRelativeScale);
+		if (SquirrelAnimClass)
+		{
+			SquirrelMesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+			SquirrelMesh->SetAnimInstanceClass(SquirrelAnimClass);
+		}
 		SquirrelMesh->SetVisibility(bShowSkeletalMesh);
 		SquirrelMesh->SetHiddenInGame(!bShowSkeletalMesh);
 	}
@@ -276,8 +298,30 @@ void ASquirrelTrainingPawn::UpdateVisualFacing(float DeltaSeconds)
 	VisualRoot->SetRelativeRotation(NewRotation);
 }
 
+USquirrelGameInstance* ASquirrelTrainingPawn::GetProgressGameInstance() const
+{
+	return GetGameInstance<USquirrelGameInstance>();
+}
+
+void ASquirrelTrainingPawn::SyncEnergyFromProgress()
+{
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		EnergyLevel = SquirrelGameInstance->GetStatLevel(ESquirrelProgressStat::Energy);
+		EnergyProgressPoints = SquirrelGameInstance->GetStatProgressPoints(ESquirrelProgressStat::Energy);
+		MaxEnergyLevel = SquirrelGameInstance->GetStatMaxLevel(ESquirrelProgressStat::Energy);
+		EnergyPointsPerLevel = SquirrelGameInstance->GetStatPointsPerLevel(ESquirrelProgressStat::Energy);
+		EnergyPointsPerFood = SquirrelGameInstance->GetEnergyPointsPerFood();
+	}
+}
+
 void ASquirrelTrainingPawn::ApplyGravity(float DeltaSeconds)
 {
+	if (RecoverFromLongFall())
+	{
+		return;
+	}
+
 	FHitResult GroundHit;
 	const bool bFoundGround = FindGround(GroundProbeDistance, GroundHit);
 
@@ -391,6 +435,44 @@ void ASquirrelTrainingPawn::UpdateEating(float DeltaSeconds)
 	}
 
 	CompleteEatingFood();
+}
+
+void ASquirrelTrainingPawn::ApplyLocalProgressTuning()
+{
+	const USquirrelProgressTuningData* ResolvedTuning = GetResolvedProgressTuning();
+	if (!ResolvedTuning)
+	{
+		return;
+	}
+
+	const FSquirrelStatTuning EnergyTuning = ResolvedTuning->GetTuningForStat(ESquirrelProgressStat::Energy);
+	StartingEnergyLevel = EnergyTuning.StartingLevel;
+	MaxEnergyLevel = EnergyTuning.MaxLevel;
+	EnergyPointsPerLevel = EnergyTuning.PointsPerLevel;
+	EnergyPointsPerFood = FMath::Max(ResolvedTuning->EnergyPointsPerFood, 0);
+}
+
+USquirrelProgressTuningData* ASquirrelTrainingPawn::GetResolvedProgressTuning() const
+{
+	if (TuningComponent)
+	{
+		return TuningComponent->ResolveProgressTuning();
+	}
+
+	if (const USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		if (USquirrelProgressTuningData* GameInstanceTuning = SquirrelGameInstance->GetProgressTuning())
+		{
+			return GameInstanceTuning;
+		}
+	}
+
+	if (const ASquirrelTrainingGameMode* TrainingGameMode = GetWorld() ? GetWorld()->GetAuthGameMode<ASquirrelTrainingGameMode>() : nullptr)
+	{
+		return TrainingGameMode->GetProgressTuning();
+	}
+
+	return nullptr;
 }
 
 bool ASquirrelTrainingPawn::TryConsumeNearbyFood()
@@ -519,6 +601,18 @@ bool ASquirrelTrainingPawn::FindGround(float TraceDistance, FHitResult& OutHit) 
 	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(SquirrelGroundTrace), false);
 	QueryParams.AddIgnoredActor(this);
 
+	if (bUseCapsuleGroundSweep && Collision)
+	{
+		const FCollisionShape CapsuleShape = FCollisionShape::MakeCapsule(
+			Collision->GetScaledCapsuleRadius() * 0.92f,
+			Collision->GetScaledCapsuleHalfHeight());
+		const FCollisionObjectQueryParams ObjectQueryParams(ECC_TO_BITFIELD(ECC_WorldStatic));
+		if (World->SweepSingleByObjectType(OutHit, Start, End, FQuat::Identity, ObjectQueryParams, CapsuleShape, QueryParams))
+		{
+			return true;
+		}
+	}
+
 	return World->LineTraceSingleByChannel(OutHit, Start, End, GroundTraceChannel, QueryParams);
 }
 
@@ -530,6 +624,29 @@ void ASquirrelTrainingPawn::SnapToGround(const FHitResult& GroundHit)
 
 	VerticalVelocity = 0.0f;
 	bIsGrounded = true;
+	LastSafeGroundedLocation = GetActorLocation();
+	bHasLastSafeGroundedLocation = true;
+}
+
+bool ASquirrelTrainingPawn::RecoverFromLongFall()
+{
+	if (!bRecoverFromLongFall || GetActorLocation().Z > FallRecoveryZ)
+	{
+		return false;
+	}
+
+	FVector RecoveryLocation = bHasLastSafeGroundedLocation ? LastSafeGroundedLocation : SpawnLocation;
+	SetActorLocation(ClampToTrainingArea(RecoveryLocation), false, nullptr, ETeleportType::TeleportPhysics);
+	VerticalVelocity = 0.0f;
+	bIsGrounded = false;
+
+	FHitResult GroundHit;
+	if (FindGround(GroundProbeDistance, GroundHit))
+	{
+		SnapToGround(GroundHit);
+	}
+
+	return true;
 }
 
 FVector ASquirrelTrainingPawn::ClampToTrainingArea(const FVector& Location) const
@@ -561,6 +678,21 @@ FVector ASquirrelTrainingPawn::ClampDragLocation(const FVector& Location) const
 float ASquirrelTrainingPawn::GetCurrentMoveSpeed() const
 {
 	return BaseMoveSpeed + (PowerLevel * SpeedPerPower);
+}
+
+int32 ASquirrelTrainingPawn::GetResolvedEnergyPointsPerFood() const
+{
+	if (const USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		return SquirrelGameInstance->GetEnergyPointsPerFood();
+	}
+
+	if (const USquirrelProgressTuningData* ResolvedTuning = GetResolvedProgressTuning())
+	{
+		return FMath::Max(ResolvedTuning->EnergyPointsPerFood, 0);
+	}
+
+	return EnergyPointsPerFood;
 }
 
 void ASquirrelTrainingPawn::BeginDrag()
@@ -649,6 +781,20 @@ void ASquirrelTrainingPawn::AddEnergyProgress(int32 Amount)
 	}
 
 	const int32 PreviousEnergyLevel = EnergyLevel;
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		SquirrelGameInstance->AddProgressToStat(ESquirrelProgressStat::Energy, Amount);
+		SyncEnergyFromProgress();
+		OnEnergyChanged.Broadcast(EnergyLevel, EnergyProgressPoints, MaxEnergyLevel);
+
+		if (EnergyLevel > PreviousEnergyLevel)
+		{
+			ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::EnergyLevelUp, GetActorLocation(), this);
+		}
+
+		return;
+	}
+
 	EnergyProgressPoints += Amount;
 
 	while (EnergyProgressPoints >= EnergyPointsPerLevel && EnergyLevel < MaxEnergyLevel)
@@ -678,13 +824,25 @@ void ASquirrelTrainingPawn::AddEnergyFromFood(int32 FoodAmount)
 		return;
 	}
 
-	AddEnergyProgress(FoodAmount * EnergyPointsPerFood);
+	AddEnergyProgress(FoodAmount * GetResolvedEnergyPointsPerFood());
 }
 
 bool ASquirrelTrainingPawn::TrySpendEnergy(int32 Amount)
 {
 	if (Amount <= 0)
 	{
+		return true;
+	}
+
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		if (!SquirrelGameInstance->TrySpendStatLevels(ESquirrelProgressStat::Energy, Amount))
+		{
+			return false;
+		}
+
+		SyncEnergyFromProgress();
+		OnEnergyChanged.Broadcast(EnergyLevel, EnergyProgressPoints, MaxEnergyLevel);
 		return true;
 	}
 

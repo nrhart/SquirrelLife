@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "InputCoreTypes.h"
 #include "SquirrelTrainingPlayerController.generated.h"
 
 class ASquirrelTrainingPawn;
 class ASquirrelTrainingCameraActor;
+class USquirrelGameInstance;
+class USquirrelProgressTuningData;
 class USquirrelTrainingHudWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSquirrelMoneyChangedSignature, int32, NewMoney);
@@ -35,12 +38,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Economy", meta = (ClampMin = "0"))
 	int32 StartingMoney = 25;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Economy")
+	TObjectPtr<USquirrelProgressTuningData> ProgressTuning;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Training|Economy")
 	int32 Money = 0;
 
+public:
 	UPROPERTY(BlueprintAssignable, Category = "Training|Economy")
 	FSquirrelMoneyChangedSignature OnMoneyChanged;
 
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|UI")
 	bool bShowTrainingHud = true;
 
@@ -49,6 +57,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|UI")
 	TSubclassOf<USquirrelTrainingHudWidget> TrainingHudWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Debug")
+	bool bEnableDebugResetProgressKey = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Debug", meta = (EditCondition = "bEnableDebugResetProgressKey"))
+	FKey DebugResetProgressKey = EKeys::Nine;
 
 	UPROPERTY()
 	TObjectPtr<USquirrelTrainingHudWidget> TrainingHudWidget;
@@ -83,10 +97,13 @@ protected:
 	bool GetDragWorldLocation(float ScreenX, float ScreenY, FVector& OutWorldLocation) const;
 	void SetupTrainingCamera();
 	void SetupTrainingHud();
+	USquirrelGameInstance* GetProgressGameInstance() const;
+	USquirrelProgressTuningData* GetResolvedProgressTuning() const;
 	void UpdatePolledMouseDrag();
 	void UpdateEdgeScrollCamera(float DeltaSeconds);
 	void UpdateDraggedSquirrel();
 	void FinishDrag();
+	void HandleDebugResetProgress();
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Training|Economy")
@@ -97,4 +114,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Training|Economy")
 	bool TrySpendMoney(int32 Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Training|Debug")
+	void ResetAllProgressForDebug();
 };

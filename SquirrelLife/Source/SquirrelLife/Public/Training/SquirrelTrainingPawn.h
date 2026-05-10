@@ -9,8 +9,12 @@
 class UCapsuleComponent;
 class UFloatingPawnMovement;
 class USceneComponent;
+class UAnimInstance;
 class USkeletalMeshComponent;
 class UStaticMeshComponent;
+class USquirrelGameInstance;
+class USquirrelProgressTuningData;
+class USquirrelTuningComponent;
 class ASquirrelFoodActor;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSquirrelPowerChangedSignature, int32, NewPower, float, NewMoveSpeed);
@@ -49,8 +53,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> SquirrelMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USquirrelTuningComponent> TuningComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
 	bool bUseSkeletalSquirrelVisual = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
+	TSubclassOf<UAnimInstance> SquirrelAnimClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Visuals")
 	FVector SkeletalMeshRelativeLocation = FVector(0.0f, 0.0f, -58.0f);
@@ -128,7 +138,16 @@ protected:
 	float GroundSnapDistance = 8.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
+	bool bUseCapsuleGroundSweep = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
 	TEnumAsByte<ECollisionChannel> GroundTraceChannel = ECC_Visibility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
+	bool bRecoverFromLongFall = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (EditCondition = "bRecoverFromLongFall", Units = "cm"))
+	float FallRecoveryZ = -5000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
 	bool bConstrainToTrainingBounds = false;
@@ -184,12 +203,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Training|Stats")
 	int32 PowerLevel = 0;
 
+public:
 	UPROPERTY(BlueprintAssignable, Category = "Training|Stats")
 	FSquirrelPowerChangedSignature OnPowerChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Training|Stats")
 	FSquirrelEnergyChangedSignature OnEnergyChanged;
 
+protected:
 	bool bIsDragging = false;
 	bool bIsGrounded = false;
 	float VerticalVelocity = 0.0f;
@@ -205,9 +226,12 @@ protected:
 	float EatTimeRemaining = 0.0f;
 	FVector DragTarget = FVector::ZeroVector;
 	FVector PreviousActorLocation = FVector::ZeroVector;
+	FVector SpawnLocation = FVector::ZeroVector;
+	FVector LastSafeGroundedLocation = FVector::ZeroVector;
 	float VisualMovementSpeed = 0.0f;
 	float TargetVisualYaw = 0.0f;
 	bool bWaitingToConsumeDroppedFood = false;
+	bool bHasLastSafeGroundedLocation = false;
 	bool bHasRandomWanderTarget = false;
 	bool bIsEating = false;
 	bool bIsSeekingFood = false;
@@ -221,11 +245,16 @@ protected:
 	void MoveToward(const FVector& Target, float Speed, float DeltaSeconds);
 	void FaceMovementDirection(float DeltaX);
 	void UpdateVisualFacing(float DeltaSeconds);
+	USquirrelGameInstance* GetProgressGameInstance() const;
+	void SyncEnergyFromProgress();
 	void ApplyGravity(float DeltaSeconds);
+	bool RecoverFromLongFall();
 	bool UpdateAutoFoodSeeking(float DeltaSeconds);
 	void UpdateRandomWander(float DeltaSeconds);
 	void UpdateDropFoodConsumption(float DeltaSeconds);
 	void UpdateEating(float DeltaSeconds);
+	void ApplyLocalProgressTuning();
+	USquirrelProgressTuningData* GetResolvedProgressTuning() const;
 	bool TryConsumeNearbyFood();
 	bool TryConsumeFood(ASquirrelFoodActor* Food);
 	void BeginEatingFood(ASquirrelFoodActor* Food);
@@ -237,6 +266,7 @@ protected:
 	FVector ClampToTrainingArea(const FVector& Location) const;
 	FVector ClampDragLocation(const FVector& Location) const;
 	float GetCurrentMoveSpeed() const;
+	int32 GetResolvedEnergyPointsPerFood() const;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Training|Drag")
@@ -285,6 +315,9 @@ public:
 	int32 GetEnergyPointsPerLevel() const { return EnergyPointsPerLevel; }
 
 	UFUNCTION(BlueprintPure, Category = "Training|Stats")
+	int32 GetEnergyPointsPerFood() const { return GetResolvedEnergyPointsPerFood(); }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Stats")
 	float GetEnergyProgressPercent() const;
 
 	UFUNCTION(BlueprintPure, Category = "Training|Stats")
@@ -313,6 +346,12 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Training|Movement")
 	float GetVisualMovementSpeed() const { return VisualMovementSpeed; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Visuals")
+	USkeletalMeshComponent* GetSquirrelMesh() const { return SquirrelMesh; }
+
+	UFUNCTION(BlueprintPure, Category = "Training|Tuning")
+	USquirrelTuningComponent* GetTuningComponent() const { return TuningComponent; }
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Training|Animation")
 	void OnEatingStarted(ASquirrelFoodActor* Food);

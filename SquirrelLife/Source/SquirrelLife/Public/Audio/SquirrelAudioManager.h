@@ -20,7 +20,9 @@ enum class ESquirrelAudioEvent : uint8
 	EatingFinished,
 	DragStarted,
 	DragReleased,
-	EnergyLevelUp
+	EnergyLevelUp,
+	CoinCollected,
+	MiniGameDeath
 };
 
 USTRUCT(BlueprintType)

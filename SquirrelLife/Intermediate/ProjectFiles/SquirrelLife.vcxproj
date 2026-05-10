@@ -260,6 +260,45 @@
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Audio\SquirrelAudioManager.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelEndlessRunnerPawn.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerCoin.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerCoinSpawner.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerObstacle.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerObstacleSpawner.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerPlatformTile.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunningMiniGameMode.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\SquirrelMiniGameAnimInstance.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\SquirrelMiniGameModeBase.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\SquirrelMiniGamePawnBase.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Progress\SquirrelGameInstance.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Progress\SquirrelProgressTuningData.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Progress\SquirrelTuningComponent.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\SquirrelLife.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -284,10 +323,31 @@
     <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelFoodDispenserWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelMiniGameHudWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelMiniGameResultWidget.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelTrainingHudWidget.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Audio\SquirrelAudioManager.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelEndlessRunnerPawn.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerCoin.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerCoinSpawner.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerObstacle.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerObstacleSpawner.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerPlatformTile.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunningMiniGameMode.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\SquirrelMiniGameAnimInstance.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\SquirrelMiniGameModeBase.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\SquirrelMiniGamePawnBase.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelGameInstance.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelProgressTuningData.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelProgressTypes.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelSaveGame.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelTuningComponent.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\SquirrelLife.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodActor.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelFoodDispenserActor.h"/>
@@ -296,6 +356,8 @@
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPawn.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Training\SquirrelTrainingPlayerController.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelFoodDispenserWidget.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelMiniGameHudWidget.h"/>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelMiniGameResultWidget.h"/>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelTrainingHudWidget.h"/>
     <None Include="..\..\Source\SquirrelLife\SquirrelLife.Build.cs"/>
     <None Include="..\..\SquirrelLife.uproject"/>

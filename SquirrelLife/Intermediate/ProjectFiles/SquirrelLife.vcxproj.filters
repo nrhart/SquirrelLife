@@ -41,6 +41,54 @@
     <ClCompile Include="..\..\Source\SquirrelLife\Private\Audio\SquirrelAudioManager.cpp">
       <Filter>Source\SquirrelLife\Private\Audio</Filter>
     </ClCompile>
+    <Filter Include="Source\SquirrelLife\Private\MiniGames">
+      <UniqueIdentifier>{2DAA120C-0E1D-3381-A936-1CDE3AD62566}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SquirrelLife\Private\MiniGames\Runner">
+      <UniqueIdentifier>{654336BE-EF7F-3F0A-BFFF-634B66F51E5B}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelEndlessRunnerPawn.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerCoin.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerCoinSpawner.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerObstacle.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerObstacleSpawner.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunnerPlatformTile.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\Runner\SquirrelRunningMiniGameMode.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames\Runner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\SquirrelMiniGameAnimInstance.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\SquirrelMiniGameModeBase.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\MiniGames\SquirrelMiniGamePawnBase.cpp">
+      <Filter>Source\SquirrelLife\Private\MiniGames</Filter>
+    </ClCompile>
+    <Filter Include="Source\SquirrelLife\Private\Progress">
+      <UniqueIdentifier>{18AE3B3C-7E78-35E7-B052-BE2A489B50AB}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Progress\SquirrelGameInstance.cpp">
+      <Filter>Source\SquirrelLife\Private\Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Progress\SquirrelProgressTuningData.cpp">
+      <Filter>Source\SquirrelLife\Private\Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\Progress\SquirrelTuningComponent.cpp">
+      <Filter>Source\SquirrelLife\Private\Progress</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\SquirrelLife.cpp">
       <Filter>Source\SquirrelLife\Private</Filter>
     </ClCompile>
@@ -71,6 +119,12 @@
     <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelFoodDispenserWidget.cpp">
       <Filter>Source\SquirrelLife\Private\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelMiniGameHudWidget.cpp">
+      <Filter>Source\SquirrelLife\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelMiniGameResultWidget.cpp">
+      <Filter>Source\SquirrelLife\Private\UI</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\SquirrelLife\Private\UI\SquirrelTrainingHudWidget.cpp">
       <Filter>Source\SquirrelLife\Private\UI</Filter>
     </ClCompile>
@@ -82,6 +136,60 @@
     </Filter>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\Audio\SquirrelAudioManager.h">
       <Filter>Source\SquirrelLife\Public\Audio</Filter>
+    </ClInclude>
+    <Filter Include="Source\SquirrelLife\Public\MiniGames">
+      <UniqueIdentifier>{6D41DD65-C050-3760-B665-1C33637E393D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SquirrelLife\Public\MiniGames\Runner">
+      <UniqueIdentifier>{3E53C338-D43E-39C8-B39D-74751A2A129C}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelEndlessRunnerPawn.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerCoin.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerCoinSpawner.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerObstacle.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerObstacleSpawner.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunnerPlatformTile.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\Runner\SquirrelRunningMiniGameMode.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames\Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\SquirrelMiniGameAnimInstance.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\SquirrelMiniGameModeBase.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\MiniGames\SquirrelMiniGamePawnBase.h">
+      <Filter>Source\SquirrelLife\Public\MiniGames</Filter>
+    </ClInclude>
+    <Filter Include="Source\SquirrelLife\Public\Progress">
+      <UniqueIdentifier>{4CA111E4-E7D6-3256-B237-25E09BF8EC1B}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelGameInstance.h">
+      <Filter>Source\SquirrelLife\Public\Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelProgressTuningData.h">
+      <Filter>Source\SquirrelLife\Public\Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelProgressTypes.h">
+      <Filter>Source\SquirrelLife\Public\Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelSaveGame.h">
+      <Filter>Source\SquirrelLife\Public\Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\Progress\SquirrelTuningComponent.h">
+      <Filter>Source\SquirrelLife\Public\Progress</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\SquirrelLife.h">
       <Filter>Source\SquirrelLife\Public</Filter>
@@ -111,6 +219,12 @@
       <UniqueIdentifier>{4DFAAABC-466A-32E6-8FB7-954C98A52C95}</UniqueIdentifier>
     </Filter>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelFoodDispenserWidget.h">
+      <Filter>Source\SquirrelLife\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelMiniGameHudWidget.h">
+      <Filter>Source\SquirrelLife\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelMiniGameResultWidget.h">
       <Filter>Source\SquirrelLife\Public\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SquirrelLife\Public\UI\SquirrelTrainingHudWidget.h">

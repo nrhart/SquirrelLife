@@ -6,8 +6,13 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "InputCoreTypes.h"
+#include "GameFramework/Pawn.h"
+#include "Progress/SquirrelGameInstance.h"
+#include "Progress/SquirrelProgressTuningData.h"
+#include "Progress/SquirrelTuningComponent.h"
 #include "Training/SquirrelFoodDispenserActor.h"
 #include "Training/SquirrelTrainingCameraActor.h"
+#include "Training/SquirrelTrainingGameMode.h"
 #include "Training/SquirrelTrainingPawn.h"
 #include "UI/SquirrelTrainingHudWidget.h"
 
@@ -31,7 +36,15 @@ void ASquirrelTrainingPlayerController::BeginPlay()
 	InputMode.SetHideCursorDuringCapture(false);
 	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetInputMode(InputMode);
-	Money = StartingMoney;
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		Money = SquirrelGameInstance->GetCoins();
+	}
+	else
+	{
+		const USquirrelProgressTuningData* ResolvedTuning = GetResolvedProgressTuning();
+		Money = ResolvedTuning ? FMath::Max(ResolvedTuning->StartingCoins, 0) : StartingMoney;
+	}
 	OnMoneyChanged.Broadcast(Money);
 	SetupTrainingCamera();
 	SetupTrainingHud();
@@ -43,6 +56,10 @@ void ASquirrelTrainingPlayerController::SetupInputComponent()
 
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &ASquirrelTrainingPlayerController::OnPrimaryPressed);
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Released, this, &ASquirrelTrainingPlayerController::OnPrimaryReleased);
+	if (bEnableDebugResetProgressKey && DebugResetProgressKey.IsValid())
+	{
+		InputComponent->BindKey(DebugResetProgressKey, IE_Pressed, this, &ASquirrelTrainingPlayerController::HandleDebugResetProgress);
+	}
 	InputComponent->BindTouch(IE_Pressed, this, &ASquirrelTrainingPlayerController::OnTouchPressed);
 	InputComponent->BindTouch(IE_Released, this, &ASquirrelTrainingPlayerController::OnTouchReleased);
 }
@@ -256,7 +273,7 @@ void ASquirrelTrainingPlayerController::SetupTrainingHud()
 	TrainingHudWidget = CreateWidget<USquirrelTrainingHudWidget>(this, TrainingHudWidgetClass);
 	if (TrainingHudWidget)
 	{
-		TrainingHudWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
+		TrainingHudWidget->SetVisibility(ESlateVisibility::Visible);
 		TrainingHudWidget->AddToPlayerScreen(10);
 
 		if (bDebugTrainingHud && !bReportedTrainingHudCreated && GEngine)
@@ -266,6 +283,45 @@ void ASquirrelTrainingPlayerController::SetupTrainingHud()
 
 		bReportedTrainingHudCreated = true;
 	}
+}
+
+USquirrelGameInstance* ASquirrelTrainingPlayerController::GetProgressGameInstance() const
+{
+	return GetGameInstance<USquirrelGameInstance>();
+}
+
+USquirrelProgressTuningData* ASquirrelTrainingPlayerController::GetResolvedProgressTuning() const
+{
+	if (ProgressTuning)
+	{
+		return ProgressTuning;
+	}
+
+	if (const APawn* CurrentPawn = GetPawn())
+	{
+		if (const USquirrelTuningComponent* PawnTuningComponent = CurrentPawn->FindComponentByClass<USquirrelTuningComponent>())
+		{
+			if (USquirrelProgressTuningData* PawnTuning = PawnTuningComponent->GetAssignedProgressTuning())
+			{
+				return PawnTuning;
+			}
+		}
+	}
+
+	if (const USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		if (USquirrelProgressTuningData* GameInstanceTuning = SquirrelGameInstance->GetProgressTuning())
+		{
+			return GameInstanceTuning;
+		}
+	}
+
+	if (const ASquirrelTrainingGameMode* TrainingGameMode = GetWorld() ? GetWorld()->GetAuthGameMode<ASquirrelTrainingGameMode>() : nullptr)
+	{
+		return TrainingGameMode->GetProgressTuning();
+	}
+
+	return nullptr;
 }
 
 void ASquirrelTrainingPlayerController::UpdatePolledMouseDrag()
@@ -370,6 +426,11 @@ void ASquirrelTrainingPlayerController::FinishDrag()
 	DefaultMouseCursor = EMouseCursor::GrabHand;
 }
 
+void ASquirrelTrainingPlayerController::HandleDebugResetProgress()
+{
+	ResetAllProgressForDebug();
+}
+
 void ASquirrelTrainingPlayerController::AddMoney(int32 Amount)
 {
 	if (Amount <= 0)
@@ -377,7 +438,15 @@ void ASquirrelTrainingPlayerController::AddMoney(int32 Amount)
 		return;
 	}
 
-	Money += Amount;
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		SquirrelGameInstance->AddCoins(Amount);
+		Money = SquirrelGameInstance->GetCoins();
+	}
+	else
+	{
+		Money += Amount;
+	}
 	OnMoneyChanged.Broadcast(Money);
 }
 
@@ -385,6 +454,18 @@ bool ASquirrelTrainingPlayerController::TrySpendMoney(int32 Amount)
 {
 	if (Amount <= 0)
 	{
+		return true;
+	}
+
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		if (!SquirrelGameInstance->TrySpendCoins(Amount))
+		{
+			return false;
+		}
+
+		Money = SquirrelGameInstance->GetCoins();
+		OnMoneyChanged.Broadcast(Money);
 		return true;
 	}
 
@@ -396,4 +477,32 @@ bool ASquirrelTrainingPlayerController::TrySpendMoney(int32 Amount)
 	Money -= Amount;
 	OnMoneyChanged.Broadcast(Money);
 	return true;
+}
+
+void ASquirrelTrainingPlayerController::ResetAllProgressForDebug()
+{
+	if (USquirrelGameInstance* SquirrelGameInstance = GetProgressGameInstance())
+	{
+		const bool bReset = SquirrelGameInstance->ResetSavedProgress();
+		Money = SquirrelGameInstance->GetCoins();
+		OnMoneyChanged.Broadcast(Money);
+
+		if (GEngine)
+		{
+			const FColor MessageColor = bReset ? FColor::Green : FColor::Yellow;
+			GEngine->AddOnScreenDebugMessage(-1, 3.0f, MessageColor, bReset
+				? TEXT("Debug: reset squirrel progress.")
+				: TEXT("Debug: reset squirrel progress, but save delete reported false."));
+		}
+		return;
+	}
+
+	const USquirrelProgressTuningData* ResolvedTuning = GetResolvedProgressTuning();
+	Money = ResolvedTuning ? FMath::Max(ResolvedTuning->StartingCoins, 0) : StartingMoney;
+	OnMoneyChanged.Broadcast(Money);
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Debug: reset local money only. SquirrelGameInstance is not active."));
+	}
 }

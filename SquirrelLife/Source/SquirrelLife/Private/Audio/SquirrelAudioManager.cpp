@@ -22,6 +22,8 @@ ASquirrelAudioManager::ASquirrelAudioManager()
 	EventCues.Add(ESquirrelAudioEvent::DragStarted);
 	EventCues.Add(ESquirrelAudioEvent::DragReleased);
 	EventCues.Add(ESquirrelAudioEvent::EnergyLevelUp);
+	EventCues.Add(ESquirrelAudioEvent::CoinCollected);
+	EventCues.Add(ESquirrelAudioEvent::MiniGameDeath);
 }
 
 bool ASquirrelAudioManager::PlayAudioEvent(ESquirrelAudioEvent AudioEvent, FVector WorldLocation, AActor* SourceActor)

@@ -1,17 +1,66 @@
 {
 	"RemapUnityFiles": 
 	{
-		"Module.SquirrelLife.gen.cpp.obj": [
+		"Module.SquirrelLife.1.cpp.obj": [
 			"SquirrelAudioManager.gen.cpp.obj",
+			"SquirrelEndlessRunnerPawn.gen.cpp.obj",
 			"SquirrelFoodActor.gen.cpp.obj",
 			"SquirrelFoodDispenserActor.gen.cpp.obj",
 			"SquirrelFoodDispenserWidget.gen.cpp.obj",
+			"SquirrelGameInstance.gen.cpp.obj",
 			"SquirrelLife.init.gen.cpp.obj",
+			"SquirrelMiniGameAnimInstance.gen.cpp.obj",
+			"SquirrelMiniGameHudWidget.gen.cpp.obj",
+			"SquirrelMiniGameModeBase.gen.cpp.obj"
+		],
+		"Module.SquirrelLife.2.cpp.obj": [
+			"SquirrelMiniGamePawnBase.gen.cpp.obj",
+			"SquirrelMiniGameResultWidget.gen.cpp.obj",
+			"SquirrelProgressTuningData.gen.cpp.obj",
+			"SquirrelProgressTypes.gen.cpp.obj",
+			"SquirrelRunnerCoin.gen.cpp.obj",
+			"SquirrelRunnerCoinSpawner.gen.cpp.obj",
+			"SquirrelRunnerObstacle.gen.cpp.obj",
+			"SquirrelRunnerObstacleSpawner.gen.cpp.obj"
+		],
+		"Module.SquirrelLife.3.cpp.obj": [
+			"SquirrelRunnerPlatformTile.gen.cpp.obj",
+			"SquirrelRunningMiniGameMode.gen.cpp.obj",
+			"SquirrelSaveGame.gen.cpp.obj",
 			"SquirrelTrainingCameraActor.gen.cpp.obj",
 			"SquirrelTrainingGameMode.gen.cpp.obj",
 			"SquirrelTrainingHudWidget.gen.cpp.obj",
 			"SquirrelTrainingPawn.gen.cpp.obj",
 			"SquirrelTrainingPlayerController.gen.cpp.obj"
+		],
+		"Module.SquirrelLife.4.cpp.obj": [
+			"SquirrelTuningComponent.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"SquirrelLife.cpp.obj",
+			"SquirrelFoodActor.cpp.obj",
+			"SquirrelFoodDispenserActor.cpp.obj",
+			"SquirrelTrainingCameraActor.cpp.obj",
+			"SquirrelFoodDispenserWidget.cpp.obj",
+			"SquirrelAudioManager.cpp.obj",
+			"SquirrelEndlessRunnerPawn.cpp.obj",
+			"SquirrelRunnerCoin.cpp.obj",
+			"SquirrelRunnerCoinSpawner.cpp.obj",
+			"SquirrelRunnerObstacle.cpp.obj",
+			"SquirrelRunnerObstacleSpawner.cpp.obj",
+			"SquirrelRunnerPlatformTile.cpp.obj",
+			"SquirrelRunningMiniGameMode.cpp.obj",
+			"SquirrelMiniGameAnimInstance.cpp.obj",
+			"SquirrelMiniGameModeBase.cpp.obj",
+			"SquirrelMiniGamePawnBase.cpp.obj",
+			"SquirrelGameInstance.cpp.obj",
+			"SquirrelProgressTuningData.cpp.obj",
+			"SquirrelTuningComponent.cpp.obj",
+			"SquirrelTrainingGameMode.cpp.obj",
+			"SquirrelTrainingPawn.cpp.obj",
+			"SquirrelTrainingPlayerController.cpp.obj",
+			"SquirrelMiniGameHudWidget.cpp.obj",
+			"SquirrelMiniGameResultWidget.cpp.obj",
+			"SquirrelTrainingHudWidget.cpp.obj"
 		]
 	}
 }
