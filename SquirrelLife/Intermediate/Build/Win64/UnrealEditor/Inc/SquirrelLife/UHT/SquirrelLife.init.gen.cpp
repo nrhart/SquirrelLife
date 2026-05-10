@@ -33,7 +33,7 @@ static_assert(!UE_WITH_CONSTINIT_UOBJECT, "This generated code can only be compi
 			SingletonFuncArray,
 			UE_ARRAY_COUNT(SingletonFuncArray),
 			PKG_CompiledIn | 0x00000000,
-			0x648A1374,
+			0xCF75F856,
 			0xFD551909,
 			METADATA_PARAMS(0, nullptr)
 		};
@@ -41,5 +41,5 @@ static_assert(!UE_WITH_CONSTINIT_UOBJECT, "This generated code can only be compi
 	}
 	return Z_Registration_Info_UPackage__Script_SquirrelLife.OuterSingleton;
 }
-static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_SquirrelLife(Z_Construct_UPackage__Script_SquirrelLife, TEXT("/Script/SquirrelLife"), Z_Registration_Info_UPackage__Script_SquirrelLife, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x648A1374, 0xFD551909));
+static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_SquirrelLife(Z_Construct_UPackage__Script_SquirrelLife, TEXT("/Script/SquirrelLife"), Z_Registration_Info_UPackage__Script_SquirrelLife, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xCF75F856, 0xFD551909));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

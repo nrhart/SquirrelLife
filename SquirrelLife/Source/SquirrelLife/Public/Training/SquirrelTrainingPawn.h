@@ -98,11 +98,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
 	bool bSweepDragMovement = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
+	bool bSweepMovement = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
 	float PatrolDistanceFromSpawn = 420.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
 	float PatrolAcceptanceRadius = 20.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
+	float WallTurnaroundDistance = 180.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "s"))
+	float WallTurnaroundDuration = 1.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", Units = "cm"))
 	float RandomWanderMinDistance = 140.0f;
@@ -142,6 +151,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
 	TEnumAsByte<ECollisionChannel> GroundTraceChannel = ECC_Visibility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement", meta = (ClampMin = "0", ClampMax = "1"))
+	float WalkableGroundNormalZ = 0.6f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Training|Movement")
 	bool bRecoverFromLongFall = true;
@@ -223,6 +235,7 @@ protected:
 	float FoodEatCooldownRemaining = 0.0f;
 	float PostEatPatrolCooldownRemaining = 0.0f;
 	float RandomWanderIdleTimeRemaining = 0.0f;
+	float WallTurnaroundTimeRemaining = 0.0f;
 	float EatTimeRemaining = 0.0f;
 	FVector DragTarget = FVector::ZeroVector;
 	FVector PreviousActorLocation = FVector::ZeroVector;
@@ -242,7 +255,9 @@ protected:
 
 	void ApplyVisualTuning();
 	void ChooseNextRandomWanderTarget();
-	void MoveToward(const FVector& Target, float Speed, float DeltaSeconds);
+	bool MoveToward(const FVector& Target, float Speed, float DeltaSeconds);
+	void StartWallTurnaround(float BlockedTargetX);
+	FVector ClampMovementAgainstWalls(const FVector& CurrentLocation, const FVector& DesiredLocation) const;
 	void FaceMovementDirection(float DeltaX);
 	void UpdateVisualFacing(float DeltaSeconds);
 	USquirrelGameInstance* GetProgressGameInstance() const;

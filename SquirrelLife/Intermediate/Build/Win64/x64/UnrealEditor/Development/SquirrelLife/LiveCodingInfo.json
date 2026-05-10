@@ -47,7 +47,6 @@
 			"SquirrelMiniGameAnimInstance.cpp.obj",
 			"SquirrelMiniGameModeBase.cpp.obj",
 			"SquirrelMiniGamePawnBase.cpp.obj",
-			"SquirrelGameInstance.cpp.obj",
 			"SquirrelProgressTuningData.cpp.obj",
 			"SquirrelTuningComponent.cpp.obj",
 			"SquirrelLife.cpp.obj",
@@ -55,12 +54,13 @@
 			"SquirrelFoodDispenserActor.cpp.obj",
 			"SquirrelTrainingCameraActor.cpp.obj",
 			"SquirrelTrainingGameMode.cpp.obj",
+			"SquirrelFoodDispenserWidget.cpp.obj",
+			"SquirrelMiniGameResultWidget.cpp.obj",
+			"SquirrelTrainingHudWidget.cpp.obj",
+			"SquirrelGameInstance.cpp.obj",
 			"SquirrelTrainingPawn.cpp.obj",
 			"SquirrelTrainingPlayerController.cpp.obj",
-			"SquirrelFoodDispenserWidget.cpp.obj",
-			"SquirrelMiniGameHudWidget.cpp.obj",
-			"SquirrelMiniGameResultWidget.cpp.obj",
-			"SquirrelTrainingHudWidget.cpp.obj"
+			"SquirrelMiniGameHudWidget.cpp.obj"
 		]
 	}
 }

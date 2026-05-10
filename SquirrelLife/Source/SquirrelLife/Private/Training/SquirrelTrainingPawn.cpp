@@ -35,6 +35,7 @@ ASquirrelTrainingPawn::ASquirrelTrainingPawn()
 	Collision->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	Collision->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	Collision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	Collision->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Block);
 	Collision->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	Collision->SetGenerateOverlapEvents(true);
 
@@ -251,7 +252,7 @@ void ASquirrelTrainingPawn::ChooseNextRandomWanderTarget()
 	bHasRandomWanderTarget = true;
 }
 
-void ASquirrelTrainingPawn::MoveToward(const FVector& Target, float Speed, float DeltaSeconds)
+bool ASquirrelTrainingPawn::MoveToward(const FVector& Target, float Speed, float DeltaSeconds)
 {
 	const FVector CurrentLocation = GetActorLocation();
 	const FVector ClampedTarget = ClampToTrainingArea(Target);
@@ -264,7 +265,11 @@ void ASquirrelTrainingPawn::MoveToward(const FVector& Target, float Speed, float
 		NewLocation.Z = FMath::FInterpConstantTo(CurrentLocation.Z, ClampDragLocation(Target).Z, DeltaSeconds, Speed);
 	}
 
-	SetActorLocation(ClampToTrainingArea(NewLocation), bIsDragging && bSweepDragMovement);
+	const bool bShouldCheckWalls = bIsDragging ? bSweepDragMovement : bSweepMovement;
+	const FVector DesiredLocation = ClampToTrainingArea(NewLocation);
+	const FVector AdjustedLocation = bShouldCheckWalls ? ClampMovementAgainstWalls(CurrentLocation, DesiredLocation) : DesiredLocation;
+	const bool bBlockedByWall = bShouldCheckWalls && !AdjustedLocation.Equals(DesiredLocation, 1.0f);
+	SetActorLocation(AdjustedLocation, false);
 
 	const FVector MovedLocation = GetActorLocation();
 	const float DeltaX = MovedLocation.X - CurrentLocation.X;
@@ -273,6 +278,75 @@ void ASquirrelTrainingPawn::MoveToward(const FVector& Target, float Speed, float
 	{
 		FaceMovementDirection(DeltaX);
 	}
+
+	return bBlockedByWall;
+}
+
+void ASquirrelTrainingPawn::StartWallTurnaround(float BlockedTargetX)
+{
+	const float CurrentX = GetActorLocation().X;
+	const float DirectionAwayFromWall = BlockedTargetX >= CurrentX ? -1.0f : 1.0f;
+	PatrolDirection = DirectionAwayFromWall;
+	PatrolTargetX = CurrentX + DirectionAwayFromWall * WallTurnaroundDistance;
+	PatrolTargetY = GetActorLocation().Y;
+
+	if (bConstrainToTrainingBounds)
+	{
+		PatrolTargetX = FMath::Clamp(PatrolTargetX, TrainingBoundsX.X, TrainingBoundsX.Y);
+	}
+
+	bHasRandomWanderTarget = true;
+	WallTurnaroundTimeRemaining = WallTurnaroundDuration;
+	RandomWanderIdleTimeRemaining = 0.0f;
+}
+
+FVector ASquirrelTrainingPawn::ClampMovementAgainstWalls(const FVector& CurrentLocation, const FVector& DesiredLocation) const
+{
+	const UWorld* World = GetWorld();
+	if (!World || !Collision)
+	{
+		return DesiredLocation;
+	}
+
+	const FVector Delta = DesiredLocation - CurrentLocation;
+	if (Delta.IsNearlyZero())
+	{
+		return DesiredLocation;
+	}
+
+	const FCollisionShape CapsuleShape = FCollisionShape::MakeCapsule(
+		Collision->GetScaledCapsuleRadius(),
+		Collision->GetScaledCapsuleHalfHeight());
+	const FCollisionObjectQueryParams ObjectQueryParams(
+		ECC_TO_BITFIELD(ECC_WorldStatic) | ECC_TO_BITFIELD(ECC_GameTraceChannel2));
+
+	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(SquirrelWallSweep), false);
+	QueryParams.AddIgnoredActor(this);
+
+	TArray<FHitResult> Hits;
+	if (!World->SweepMultiByObjectType(Hits, CurrentLocation, DesiredLocation, FQuat::Identity, ObjectQueryParams, CapsuleShape, QueryParams))
+	{
+		return DesiredLocation;
+	}
+
+	float BlockingTime = 1.0f;
+	for (const FHitResult& Hit : Hits)
+	{
+		if (!Hit.bBlockingHit || Hit.bStartPenetrating || Hit.ImpactNormal.Z >= WalkableGroundNormalZ)
+		{
+			continue;
+		}
+
+		BlockingTime = FMath::Min(BlockingTime, Hit.Time);
+	}
+
+	if (BlockingTime >= 1.0f)
+	{
+		return DesiredLocation;
+	}
+
+	constexpr float PullBackTime = 0.02f;
+	return CurrentLocation + Delta * FMath::Max(BlockingTime - PullBackTime, 0.0f);
 }
 
 void ASquirrelTrainingPawn::FaceMovementDirection(float DeltaX)
@@ -383,6 +457,23 @@ bool ASquirrelTrainingPawn::UpdateAutoFoodSeeking(float DeltaSeconds)
 
 void ASquirrelTrainingPawn::UpdateRandomWander(float DeltaSeconds)
 {
+	if (WallTurnaroundTimeRemaining > 0.0f)
+	{
+		WallTurnaroundTimeRemaining = FMath::Max(WallTurnaroundTimeRemaining - DeltaSeconds, 0.0f);
+		MoveToward(FVector(PatrolTargetX, PatrolTargetY, GetActorLocation().Z), GetCurrentMoveSpeed(), DeltaSeconds);
+
+		if (WallTurnaroundTimeRemaining <= 0.0f || FVector2D::Distance(
+			FVector2D(GetActorLocation().X, GetActorLocation().Y),
+			FVector2D(PatrolTargetX, PatrolTargetY)) <= PatrolAcceptanceRadius)
+		{
+			WallTurnaroundTimeRemaining = 0.0f;
+			bHasRandomWanderTarget = false;
+			RandomWanderIdleTimeRemaining = FMath::FRandRange(RandomWanderMinIdleTime, RandomWanderMaxIdleTime);
+		}
+
+		return;
+	}
+
 	if (!bHasRandomWanderTarget)
 	{
 		RandomWanderIdleTimeRemaining -= DeltaSeconds;
@@ -394,7 +485,12 @@ void ASquirrelTrainingPawn::UpdateRandomWander(float DeltaSeconds)
 		ChooseNextRandomWanderTarget();
 	}
 
-	MoveToward(FVector(PatrolTargetX, PatrolTargetY, GetActorLocation().Z), GetCurrentMoveSpeed(), DeltaSeconds);
+	const bool bHitWall = MoveToward(FVector(PatrolTargetX, PatrolTargetY, GetActorLocation().Z), GetCurrentMoveSpeed(), DeltaSeconds);
+	if (bHitWall)
+	{
+		StartWallTurnaround(PatrolTargetX);
+		return;
+	}
 
 	if (FVector2D::Distance(
 		FVector2D(GetActorLocation().X, GetActorLocation().Y),
@@ -601,19 +697,55 @@ bool ASquirrelTrainingPawn::FindGround(float TraceDistance, FHitResult& OutHit) 
 	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(SquirrelGroundTrace), false);
 	QueryParams.AddIgnoredActor(this);
 
+	const auto IsWalkableGroundHit = [this](const FHitResult& Hit)
+	{
+		return !Hit.bStartPenetrating && Hit.ImpactNormal.Z >= WalkableGroundNormalZ;
+	};
+
 	if (bUseCapsuleGroundSweep && Collision)
 	{
 		const FCollisionShape CapsuleShape = FCollisionShape::MakeCapsule(
 			Collision->GetScaledCapsuleRadius() * 0.92f,
 			Collision->GetScaledCapsuleHalfHeight());
 		const FCollisionObjectQueryParams ObjectQueryParams(ECC_TO_BITFIELD(ECC_WorldStatic));
-		if (World->SweepSingleByObjectType(OutHit, Start, End, FQuat::Identity, ObjectQueryParams, CapsuleShape, QueryParams))
+		TArray<FHitResult> SweepHits;
+		if (World->SweepMultiByObjectType(SweepHits, Start, End, FQuat::Identity, ObjectQueryParams, CapsuleShape, QueryParams))
 		{
-			return true;
+			for (const FHitResult& SweepHit : SweepHits)
+			{
+				if (IsWalkableGroundHit(SweepHit))
+				{
+					OutHit = SweepHit;
+					return true;
+				}
+			}
 		}
 	}
 
-	return World->LineTraceSingleByChannel(OutHit, Start, End, GroundTraceChannel, QueryParams);
+	TArray<FHitResult> LineHits;
+	if (!World->LineTraceMultiByChannel(LineHits, Start, End, GroundTraceChannel, QueryParams))
+	{
+		return false;
+	}
+
+	for (const FHitResult& LineHit : LineHits)
+	{
+		const UPrimitiveComponent* HitComponent = LineHit.GetComponent();
+		if (HitComponent && HitComponent->GetCollisionObjectType() == ECC_GameTraceChannel2)
+		{
+			continue;
+		}
+
+		if (!IsWalkableGroundHit(LineHit))
+		{
+			continue;
+		}
+
+		OutHit = LineHit;
+		return true;
+	}
+
+	return false;
 }
 
 void ASquirrelTrainingPawn::SnapToGround(const FHitResult& GroundHit)
@@ -707,6 +839,7 @@ void ASquirrelTrainingPawn::BeginDrag()
 	FoodBeingEaten = nullptr;
 	EatTimeRemaining = 0.0f;
 	PostEatPatrolCooldownRemaining = 0.0f;
+	WallTurnaroundTimeRemaining = 0.0f;
 	bWaitingToConsumeDroppedFood = false;
 	bHasRandomWanderTarget = false;
 	DropConsumeTimeRemaining = 0.0f;
@@ -749,6 +882,7 @@ void ASquirrelTrainingPawn::EndDrag()
 	PatrolCenterY = GetActorLocation().Y;
 	PatrolDirection = FMath::IsNearlyZero(PatrolDirection) ? 1.0f : PatrolDirection;
 	bHasRandomWanderTarget = false;
+	WallTurnaroundTimeRemaining = 0.0f;
 	RandomWanderIdleTimeRemaining = FMath::FRandRange(RandomWanderMinIdleTime, RandomWanderMaxIdleTime);
 	ASquirrelAudioManager::PlaySquirrelAudioEvent(this, ESquirrelAudioEvent::DragReleased, GetActorLocation(), this);
 }
